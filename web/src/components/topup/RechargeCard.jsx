@@ -35,7 +35,7 @@ import {
   Tabs,
   TabPane,
 } from '@douyinfe/semi-ui';
-import { SiAlipay, SiWechat, SiStripe } from 'react-icons/si';
+import { SiAlipay, SiWechat, SiStripe, SiEthereum } from 'react-icons/si';
 import {
   CreditCard,
   Coins,
@@ -57,6 +57,8 @@ const RechargeCard = ({
   enableOnlineTopUp,
   enableStripeTopUp,
   enableCreemTopUp,
+  enableMetaMaskTopUp,
+  metaMaskPreTopUp,
   creemProducts,
   creemPreTopUp,
   presetAmounts,
@@ -224,7 +226,7 @@ const RechargeCard = ({
           <div className='py-8 flex justify-center'>
             <Spin size='large' />
           </div>
-        ) : enableOnlineTopUp || enableStripeTopUp || enableCreemTopUp ? (
+        ) : enableOnlineTopUp || enableStripeTopUp || enableCreemTopUp || enableMetaMaskTopUp ? (
           <Form
             getFormApi={(api) => (onlineFormApiRef.current = api)}
             initValues={{ topUpCount: topUpCount }}
@@ -290,9 +292,9 @@ const RechargeCard = ({
                   </Col>
                   <Col xs={24} sm={24} md={24} lg={14} xl={14}>
                     <Form.Slot label={t('选择支付方式')}>
-                      {payMethods && payMethods.length > 0 ? (
+                      {(payMethods && payMethods.length > 0) || enableMetaMaskTopUp ? (
                         <Space wrap>
-                          {payMethods.map((payMethod) => {
+                          {payMethods && payMethods.map((payMethod) => {
                             const minTopupVal = Number(payMethod.min_topup) || 0;
                             const isStripe = payMethod.type === 'stripe';
                             const disabled =
@@ -351,6 +353,19 @@ const RechargeCard = ({
                               </React.Fragment>
                             );
                           })}
+                          {enableMetaMaskTopUp && (
+                            <Button
+                              theme='outline'
+                              type='tertiary'
+                              onClick={metaMaskPreTopUp}
+                              loading={paymentLoading && payWay === 'metamask'}
+                              icon={<SiEthereum size={18} color='#e8a923' />}
+                              className='!rounded-lg !px-4 !py-2'
+                              style={{ borderColor: '#e8a923', color: '#e8a923' }}
+                            >
+                              MetaMask
+                            </Button>
+                          )}
                         </Space>
                       ) : (
                         <div className='text-gray-500 text-sm p-3 bg-gray-50 rounded-lg border border-dashed border-gray-300'>
@@ -509,6 +524,7 @@ const RechargeCard = ({
                   </div>
                 </Form.Slot>
               )}
+
             </div>
           </Form>
         ) : (
@@ -622,6 +638,7 @@ const RechargeCard = ({
                 enableOnlineTopUp={enableOnlineTopUp}
                 enableStripeTopUp={enableStripeTopUp}
                 enableCreemTopUp={enableCreemTopUp}
+                enableMetaMaskTopUp={enableMetaMaskTopUp}
                 billingPreference={billingPreference}
                 onChangeBillingPreference={onChangeBillingPreference}
                 activeSubscriptions={activeSubscriptions}

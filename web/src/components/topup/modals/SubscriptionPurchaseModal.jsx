@@ -29,7 +29,7 @@ import {
   Tooltip,
 } from '@douyinfe/semi-ui';
 import { Crown, CalendarClock, Package } from 'lucide-react';
-import { SiStripe } from 'react-icons/si';
+import { SiStripe, SiEthereum } from 'react-icons/si';
 import { IconCreditCard } from '@douyinfe/semi-icons';
 import { renderQuota } from '../../../helpers';
 import { getCurrencyConfig } from '../../../helpers/render';
@@ -52,10 +52,12 @@ const SubscriptionPurchaseModal = ({
   enableOnlineTopUp = false,
   enableStripeTopUp = false,
   enableCreemTopUp = false,
+  enableMetaMaskTopUp = false,
   purchaseLimitInfo = null,
   onPayStripe,
   onPayCreem,
   onPayEpay,
+  onPayMetaMask,
 }) => {
   const plan = selectedPlan?.plan;
   const totalAmount = Number(plan?.total_amount || 0);
@@ -69,7 +71,8 @@ const SubscriptionPurchaseModal = ({
   const hasStripe = enableStripeTopUp && !!plan?.stripe_price_id;
   const hasCreem = enableCreemTopUp && !!plan?.creem_product_id;
   const hasEpay = enableOnlineTopUp && epayMethods.length > 0;
-  const hasAnyPayment = hasStripe || hasCreem || hasEpay;
+  const hasMetaMask = enableMetaMaskTopUp;
+  const hasAnyPayment = hasStripe || hasCreem || hasEpay || hasMetaMask;
   const purchaseLimit = Number(purchaseLimitInfo?.limit || 0);
   const purchaseCount = Number(purchaseLimitInfo?.count || 0);
   const purchaseLimitReached =
@@ -185,9 +188,9 @@ const SubscriptionPurchaseModal = ({
                 {t('选择支付方式')}：
               </Text>
 
-              {/* Stripe / Creem */}
-              {(hasStripe || hasCreem) && (
-                <div className='flex gap-2'>
+              {/* Stripe / Creem / MetaMask */}
+              {(hasStripe || hasCreem || hasMetaMask) && (
+                <div className='flex gap-2 flex-wrap'>
                   {hasStripe && (
                     <Button
                       theme='light'
@@ -210,6 +213,19 @@ const SubscriptionPurchaseModal = ({
                       disabled={purchaseLimitReached}
                     >
                       Creem
+                    </Button>
+                  )}
+                  {hasMetaMask && (
+                    <Button
+                      theme='outline'
+                      className='flex-1'
+                      icon={<SiEthereum size={14} color='#e8a923' />}
+                      onClick={onPayMetaMask}
+                      loading={paying}
+                      disabled={purchaseLimitReached}
+                      style={{ borderColor: '#e8a923', color: '#e8a923' }}
+                    >
+                      MetaMask
                     </Button>
                   )}
                 </div>

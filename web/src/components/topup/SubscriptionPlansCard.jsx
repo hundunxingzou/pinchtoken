@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import {
   Badge,
   Button,
@@ -34,6 +34,7 @@ import { API, showError, showSuccess, renderQuota } from '../../helpers';
 import { getCurrencyConfig } from '../../helpers/render';
 import { RefreshCw, Sparkles } from 'lucide-react';
 import SubscriptionPurchaseModal from './modals/SubscriptionPurchaseModal';
+import MetaMaskPayModal from './modals/MetaMaskPayModal';
 import {
   formatSubscriptionDuration,
   formatSubscriptionResetPeriod,
@@ -77,6 +78,7 @@ const SubscriptionPlansCard = ({
   enableOnlineTopUp = false,
   enableStripeTopUp = false,
   enableCreemTopUp = false,
+  enableMetaMaskTopUp = false,
   billingPreference,
   onChangeBillingPreference,
   activeSubscriptions = [],
@@ -89,6 +91,10 @@ const SubscriptionPlansCard = ({
   const [paying, setPaying] = useState(false);
   const [selectedEpayMethod, setSelectedEpayMethod] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+
+  // MetaMask 订阅支付状态
+  const [metaMaskOpen, setMetaMaskOpen] = useState(false);
+  const [metaMaskPayInfo, setMetaMaskPayInfo] = useState(null);
 
   const epayMethods = useMemo(() => getEpayMethods(payMethods), [payMethods]);
 
@@ -184,6 +190,39 @@ const SubscriptionPlansCard = ({
         submitEpayForm({ url: res.data.url, params: res.data.data });
         showSuccess(t('已发起支付'));
         closeBuy();
+      } else {
+        const errorMsg =
+          typeof res.data?.data === 'string'
+            ? res.data.data
+            : res.data?.message || t('支付失败');
+        showError(errorMsg);
+      }
+    } catch (e) {
+      showError(t('支付请求失败'));
+    } finally {
+      setPaying(false);
+    }
+  };
+
+  const payMetaMask = async () => {
+    if (!enableMetaMaskTopUp) {
+      showError(t('管理员未开启 MetaMask 支付'));
+      return;
+    }
+    setPaying(true);
+    try {
+      const res = await API.post('/api/subscription/metamask/pay', {
+        plan_id: selectedPlan.plan.id,
+      });
+      if (res.data?.message === 'success') {
+        const d = res.data.data;
+        setMetaMaskPayInfo({
+          tradeNo: d.trade_no,
+          walletAddress: d.wallet_address,
+          usdAmount: d.usd_amount,
+        });
+        setOpen(false);
+        setMetaMaskOpen(true);
       } else {
         const errorMsg =
           typeof res.data?.data === 'string'
@@ -665,6 +704,7 @@ const SubscriptionPlansCard = ({
         enableOnlineTopUp={enableOnlineTopUp}
         enableStripeTopUp={enableStripeTopUp}
         enableCreemTopUp={enableCreemTopUp}
+        enableMetaMaskTopUp={enableMetaMaskTopUp}
         purchaseLimitInfo={
           selectedPlan?.plan?.id
             ? {
@@ -676,7 +716,25 @@ const SubscriptionPlansCard = ({
         onPayStripe={payStripe}
         onPayCreem={payCreem}
         onPayEpay={payEpay}
+        onPayMetaMask={payMetaMask}
       />
+
+      {/* MetaMask 订阅支付弹窗 */}
+      {metaMaskOpen && metaMaskPayInfo && (
+        <MetaMaskPayModal
+          t={t}
+          visible={metaMaskOpen}
+          onClose={() => {
+            setMetaMaskOpen(false);
+            setMetaMaskPayInfo(null);
+          }}
+          tradeNo={metaMaskPayInfo.tradeNo}
+          walletAddress={metaMaskPayInfo.walletAddress}
+          usdAmount={metaMaskPayInfo.usdAmount}
+          onSuccess={() => reloadSubscriptionSelf?.()}
+          apiVerifyPath='/api/subscription/metamask/verify'
+        />
+      )}
     </>
   );
 };

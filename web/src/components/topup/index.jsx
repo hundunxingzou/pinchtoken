@@ -38,6 +38,7 @@ import InvitationCard from './InvitationCard';
 import TransferModal from './modals/TransferModal';
 import PaymentConfirmModal from './modals/PaymentConfirmModal';
 import TopupHistoryModal from './modals/TopupHistoryModal';
+import MetaMaskPayModal from './modals/MetaMaskPayModal';
 
 const TopUp = () => {
   const { t } = useTranslation();
@@ -68,6 +69,11 @@ const TopUp = () => {
   const [enableCreemTopUp, setEnableCreemTopUp] = useState(false);
   const [creemOpen, setCreemOpen] = useState(false);
   const [selectedCreemProduct, setSelectedCreemProduct] = useState(null);
+
+  // MetaMask 相关状态
+  const [enableMetaMaskTopUp, setEnableMetaMaskTopUp] = useState(false);
+  const [metaMaskOpen, setMetaMaskOpen] = useState(false);
+  const [metaMaskPayInfo, setMetaMaskPayInfo] = useState(null); // { tradeNo, walletAddress, ethAmount, usdAmount, chainName, chainId }
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
@@ -315,6 +321,44 @@ const TopUp = () => {
     window.open(data.checkout_url, '_blank');
   };
 
+  // MetaMask 充值
+  const metaMaskPreTopUp = async () => {
+    if (!enableMetaMaskTopUp) {
+      showError(t('管理员未开启 MetaMask 充值！'));
+      return;
+    }
+    if (topUpCount < minTopUp) {
+      showError(t('充值数量不能小于') + minTopUp);
+      return;
+    }
+    setPaymentLoading(true);
+    try {
+      const res = await API.post('/api/user/metamask/pay', {
+        amount: parseInt(topUpCount),
+      });
+      const { message, data } = res.data;
+      if (message === 'success') {
+        setMetaMaskPayInfo({
+          tradeNo: data.trade_no,
+          walletAddress: data.wallet_address,
+          usdAmount: data.usd_amount,
+        });
+        setMetaMaskOpen(true);
+      } else {
+        const errMsg = typeof data === 'string' ? data : message || t('创建订单失败');
+        showError(errMsg);
+      }
+    } catch (err) {
+      showError(t('请求失败'));
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
+  const handleMetaMaskSuccess = (quota) => {
+    getUserQuota().then();
+  };
+
   const getUserQuota = async () => {
     let res = await API.get(`/api/user/self`);
     const { success, message, data } = res.data;
@@ -453,6 +497,7 @@ const TopUp = () => {
           setEnableOnlineTopUp(enableOnlineTopUp);
           setEnableStripeTopUp(enableStripeTopUp);
           setEnableCreemTopUp(enableCreemTopUp);
+          setEnableMetaMaskTopUp(data.enable_metamask_topup || false);
           setMinTopUp(minTopUpValue);
           setTopUpCount(minTopUpValue);
 
@@ -731,6 +776,19 @@ const TopUp = () => {
         )}
       </Modal>
 
+      {/* MetaMask 支付弹窗 */}
+      {metaMaskOpen && metaMaskPayInfo && (
+        <MetaMaskPayModal
+          t={t}
+          visible={metaMaskOpen}
+          onClose={() => setMetaMaskOpen(false)}
+          tradeNo={metaMaskPayInfo.tradeNo}
+          walletAddress={metaMaskPayInfo.walletAddress}
+          usdAmount={metaMaskPayInfo.usdAmount}
+          onSuccess={handleMetaMaskSuccess}
+        />
+      )}
+
       {/* 主布局区域 */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <RechargeCard
@@ -738,6 +796,8 @@ const TopUp = () => {
           enableOnlineTopUp={enableOnlineTopUp}
           enableStripeTopUp={enableStripeTopUp}
           enableCreemTopUp={enableCreemTopUp}
+          enableMetaMaskTopUp={enableMetaMaskTopUp}
+          metaMaskPreTopUp={metaMaskPreTopUp}
           creemProducts={creemProducts}
           creemPreTopUp={creemPreTopUp}
           presetAmounts={presetAmounts}

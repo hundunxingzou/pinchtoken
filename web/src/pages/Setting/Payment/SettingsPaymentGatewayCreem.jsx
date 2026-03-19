@@ -44,6 +44,15 @@ export default function SettingsPaymentGatewayCreem(props) {
     CreemWebhookSecret: '',
     CreemProducts: '[]',
     CreemTestMode: false,
+
+    // 代币充值（钱包转账）
+    MetaMaskChain: 'eth',
+    MetaMaskEthRpcUrl: '',
+    MetaMaskBscRpcUrl: '',
+    MetaMaskTokenContractAddress: '',
+    MetaMaskTokenDecimals: 18,
+    MetaMaskWalletAddress: '',
+    MetaMaskMinTopUp: 1,
   });
   const [originInputs, setOriginInputs] = useState({});
   const [products, setProducts] = useState([]);
@@ -65,6 +74,20 @@ export default function SettingsPaymentGatewayCreem(props) {
         CreemWebhookSecret: props.options.CreemWebhookSecret || '',
         CreemProducts: props.options.CreemProducts || '[]',
         CreemTestMode: props.options.CreemTestMode === 'true',
+
+        MetaMaskChain: props.options.MetaMaskChain || 'eth',
+        MetaMaskEthRpcUrl: props.options.MetaMaskEthRpcUrl || '',
+        MetaMaskBscRpcUrl: props.options.MetaMaskBscRpcUrl || '',
+        MetaMaskTokenContractAddress: props.options.MetaMaskTokenContractAddress || '',
+        MetaMaskTokenDecimals:
+          props.options.MetaMaskTokenDecimals !== undefined
+            ? parseInt(props.options.MetaMaskTokenDecimals)
+            : 18,
+        MetaMaskWalletAddress: props.options.MetaMaskWalletAddress || '',
+        MetaMaskMinTopUp:
+          props.options.MetaMaskMinTopUp !== undefined
+            ? parseInt(props.options.MetaMaskMinTopUp)
+            : 1,
       };
       setInputs(currentInputs);
       setOriginInputs({ ...currentInputs });
@@ -108,6 +131,27 @@ export default function SettingsPaymentGatewayCreem(props) {
 
       // Save products as JSON string
       options.push({ key: 'CreemProducts', value: JSON.stringify(products) });
+
+      // 代币充值（钱包转账）配置
+      options.push({ key: 'MetaMaskChain', value: inputs.MetaMaskChain || 'eth' });
+      options.push({ key: 'MetaMaskEthRpcUrl', value: inputs.MetaMaskEthRpcUrl || '' });
+      options.push({ key: 'MetaMaskBscRpcUrl', value: inputs.MetaMaskBscRpcUrl || '' });
+      options.push({
+        key: 'MetaMaskTokenContractAddress',
+        value: inputs.MetaMaskTokenContractAddress || '',
+      });
+      options.push({
+        key: 'MetaMaskTokenDecimals',
+        value: String(inputs.MetaMaskTokenDecimals || 18),
+      });
+      options.push({
+        key: 'MetaMaskWalletAddress',
+        value: inputs.MetaMaskWalletAddress || '',
+      });
+      options.push({
+        key: 'MetaMaskMinTopUp',
+        value: String(inputs.MetaMaskMinTopUp || 1),
+      });
 
       // 发送请求
       const requestQueue = options.map((opt) =>
@@ -320,6 +364,78 @@ export default function SettingsPaymentGatewayCreem(props) {
               }
             />
           </div>
+
+          <Form.Section text={t('代币充值（钱包转账）')}>
+            <Banner
+              type='info'
+              description={t('配置链/RPC/代币合约/decimals/收款地址与最低充值数量。用户提交交易哈希后系统将链上校验。')}
+              style={{ marginBottom: 16 }}
+            />
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.Select field='MetaMaskChain' label={t('链选择')}>
+                  <Form.Select.Option value='eth'>Ethereum</Form.Select.Option>
+                  <Form.Select.Option value='bsc'>BSC</Form.Select.Option>
+                </Form.Select>
+              </Col>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.Input
+                  field='MetaMaskEthRpcUrl'
+                  label={t('ETH RPC URL')}
+                  placeholder='https://...'
+                />
+              </Col>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.Input
+                  field='MetaMaskBscRpcUrl'
+                  label={t('BSC RPC URL')}
+                  placeholder='https://...'
+                />
+              </Col>
+            </Row>
+
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}
+              style={{ marginTop: 16 }}
+            >
+              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                <Form.Input
+                  field='MetaMaskTokenContractAddress'
+                  label={t('代币合约地址')}
+                  placeholder='0x...'
+                />
+              </Col>
+              <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+                <Form.InputNumber
+                  field='MetaMaskTokenDecimals'
+                  label={t('decimals')}
+                  min={0}
+                  precision={0}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.Input
+                  field='MetaMaskWalletAddress'
+                  label={t('收款钱包地址')}
+                  placeholder='0x...'
+                />
+              </Col>
+            </Row>
+
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}
+              style={{ marginTop: 16 }}
+            >
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.InputNumber
+                  field='MetaMaskMinTopUp'
+                  label={t('最低充值数量（token）')}
+                  min={1}
+                  precision={0}
+                />
+              </Col>
+            </Row>
+          </Form.Section>
 
           <Button onClick={submitCreemSetting} style={{ marginTop: 16 }}>
             {t('更新 Creem 设置')}

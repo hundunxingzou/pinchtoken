@@ -21,12 +21,25 @@ type TopUp struct {
 	CreateTime    int64   `json:"create_time"`
 	CompleteTime  int64   `json:"complete_time"`
 	Status        string  `json:"status"`
+	ProviderPayload string `json:"provider_payload" gorm:"type:text"`
 }
 
 func (topUp *TopUp) Insert() error {
 	var err error
 	err = DB.Create(topUp).Error
 	return err
+}
+
+func HasWalletTopUpTxHash(txHash string) bool {
+	if txHash == "" {
+		return false
+	}
+	var cnt int64
+	err := DB.Model(&TopUp{}).Where("payment_method = ? AND provider_payload = ?", "wallet", txHash).Count(&cnt).Error
+	if err != nil {
+		return false
+	}
+	return cnt > 0
 }
 
 func (topUp *TopUp) Update() error {

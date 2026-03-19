@@ -61,37 +61,49 @@ require (
 
 require (
 	github.com/DmitriyVTitov/size v1.5.0 // indirect
+	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/anknown/darts v0.0.0-20151216065714-83ff685239e6 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.5 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.18 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.18 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bits-and-blooms/bitset v1.20.0 // indirect
 	github.com/boombuler/barcode v1.1.0 // indirect
 	github.com/bytedance/sonic v1.14.1 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
+	github.com/consensys/bavard v0.1.27 // indirect
+	github.com/consensys/gnark-crypto v0.16.0 // indirect
+	github.com/crate-crypto/go-eth-kzg v1.3.0 // indirect
+	github.com/crate-crypto/go-ipa v0.0.0-20240724233137-53bbb0ceb27a // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
+	github.com/deckarep/golang-set/v2 v2.6.0 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
+	github.com/ethereum/c-kzg-4844/v2 v2.1.0 // indirect
+	github.com/ethereum/go-ethereum v1.15.11 // indirect
+	github.com/ethereum/go-verkle v0.2.2 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/glebarez/go-sqlite v1.21.2 // indirect
 	github.com/go-audio/audio v1.0.0 // indirect
 	github.com/go-audio/riff v1.0.0 // indirect
-	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-webauthn/x v0.1.25 // indirect
-	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/goccy/go-json v0.10.4 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.9 // indirect
+	github.com/holiman/uint256 v1.3.2 // indirect
 	github.com/icza/bitio v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
@@ -108,6 +120,7 @@ require (
 	github.com/mewkiz/pkg v0.0.0-20250417130911-3f050ff8c56d // indirect
 	github.com/mewpkg/term v0.0.0-20241026122259-37a80af23985 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/mmcloughlin/addchain v0.4.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
@@ -121,6 +134,7 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/samber/go-singleflightx v0.3.2 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
+	github.com/supranational/blst v0.3.14 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
@@ -136,4 +150,5 @@ require (
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
 	modernc.org/sqlite v1.40.1 // indirect
+	rsc.io/tmplfunc v0.0.3 // indirect
 )

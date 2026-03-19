@@ -341,7 +341,10 @@ const TopUp = () => {
         setMetaMaskPayInfo({
           tradeNo: data.trade_no,
           walletAddress: data.wallet_address,
-          usdAmount: data.usd_amount,
+          chain: data.chain,
+          tokenContractAddress: data.token_contract_address,
+          tokenDecimals: data.token_decimals,
+          tokenAmount: data.token_amount,
         });
         setMetaMaskOpen(true);
       } else {
@@ -784,7 +787,10 @@ const TopUp = () => {
           onClose={() => setMetaMaskOpen(false)}
           tradeNo={metaMaskPayInfo.tradeNo}
           walletAddress={metaMaskPayInfo.walletAddress}
-          usdAmount={metaMaskPayInfo.usdAmount}
+          tokenAmount={metaMaskPayInfo.tokenAmount}
+          chain={metaMaskPayInfo.chain}
+          tokenContractAddress={metaMaskPayInfo.tokenContractAddress}
+          tokenDecimals={metaMaskPayInfo.tokenDecimals}
           onSuccess={handleMetaMaskSuccess}
         />
       )}

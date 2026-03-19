@@ -33,24 +33,30 @@ import { API, showError, showSuccess } from '../../../helpers';
 const { Text, Title, Paragraph } = Typography;
 
 /**
- * USD 钱包支付弹窗
+ * 代币钱包充值弹窗
  *
  * Props:
- *   visible          - 是否可见
- *   onClose          - 关闭回调
- *   tradeNo          - 订单号
- *   walletAddress    - 收款地址
- *   usdAmount        - 需要支付的 USD 金额
- *   onSuccess        - 支付成功回调
- *   t                - i18n 翻译函数
- *   apiVerifyPath    - 验证接口路径（默认 /api/user/metamask/verify）
+ *   visible              - 是否可见
+ *   onClose              - 关闭回调
+ *   tradeNo              - 订单号
+ *   walletAddress        - 收款地址
+ *   tokenAmount          - 需要支付的 token 数量（整数）
+ *   chain                - 链（eth|bsc）
+ *   tokenContractAddress - token 合约地址
+ *   tokenDecimals        - token decimals
+ *   onSuccess            - 支付成功回调
+ *   t                    - i18n 翻译函数
+ *   apiVerifyPath        - 验证接口路径（默认 /api/user/metamask/verify）
  */
 const MetaMaskPayModal = ({
   visible,
   onClose,
   tradeNo,
   walletAddress,
-  usdAmount,
+  tokenAmount,
+  chain,
+  tokenContractAddress,
+  tokenDecimals,
   onSuccess,
   t,
   apiVerifyPath = '/api/user/metamask/verify',
@@ -83,7 +89,7 @@ const MetaMaskPayModal = ({
       });
       const { message, data } = res.data;
       if (message === 'success') {
-        showSuccess(t('USD 充值成功！'));
+        showSuccess(t('充值成功！'));
         onSuccess?.(data?.quota);
         handleClose();
       } else {
@@ -107,8 +113,8 @@ const MetaMaskPayModal = ({
 
   const stepList = [
     { title: t('查看收款地址'), description: t('复制收款钱包地址') },
-    { title: t('完成转账'), description: t('向收款地址转入 USD 稳定币') },
-    { title: t('提交凭证'), description: t('输入转账哈希完成确认') },
+    { title: t('完成转账'), description: t('向收款地址转入代币') },
+    { title: t('提交凭证'), description: t('输入交易哈希完成确认') },
   ];
 
   return (
@@ -116,7 +122,7 @@ const MetaMaskPayModal = ({
       title={
         <Space>
           <span style={{ fontSize: 20 }}>💵</span>
-          <span>{t('USD 钱包支付')}</span>
+          <span>{t('钱包转账充值')}</span>
         </Space>
       }
       visible={visible}
@@ -129,6 +135,15 @@ const MetaMaskPayModal = ({
       <Spin spinning={loading}>
         <Space vertical style={{ width: '100%' }} spacing={16}>
           {/* 支付信息 */}
+          <div style={{ marginTop: -8, marginBottom: -8 }}>
+            <Text type='secondary' style={{ fontSize: 12 }}>
+              {t('链')}: {chain || '-'}
+              {'  '}|{'  '}
+              {t('合约')}: {tokenContractAddress || '-'}
+              {'  '}|{'  '}
+              decimals: {tokenDecimals ?? '-'}
+            </Text>
+          </div>
           <div
             style={{
               background: 'var(--semi-color-fill-0)',
@@ -137,9 +152,12 @@ const MetaMaskPayModal = ({
             }}
           >
             <div style={{ marginBottom: 12 }}>
-              <Text type='secondary'>{t('支付金额')}</Text>
-              <Title heading={3} style={{ color: '#2e7d32', marginBottom: 0, marginTop: 4 }}>
-                $ {usdAmount?.toFixed ? usdAmount.toFixed(2) : usdAmount} USD
+              <Text type='secondary'>{t('充值数量')}</Text>
+              <Title
+                heading={3}
+                style={{ color: '#2e7d32', marginBottom: 0, marginTop: 4 }}
+              >
+                {tokenAmount} TOKEN
               </Title>
             </div>
             <div>
@@ -154,7 +172,9 @@ const MetaMaskPayModal = ({
             <Banner
               type='info'
               style={{ marginTop: 12 }}
-              description={t('请使用任意钱包向上方地址转入对应 USD 稳定币（USDT / USDC 等），转账完成后在下方输入交易哈希提交验证。')}
+              description={t(
+                '请使用任意钱包向上方地址转入对应代币，转账完成后在下方输入交易哈希提交验证。',
+              )}
               closeIcon={null}
             />
           </div>

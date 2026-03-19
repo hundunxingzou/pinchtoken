@@ -118,6 +118,7 @@ func SubscriptionVerifyMetaMaskPay(c *gin.Context) {
 		return
 	}
 
+
 	// 完成订单
 	if err := model.CompleteSubscriptionOrder(req.TradeNo, common.GetJsonString(map[string]string{"tx_hash": req.TxHash})); err != nil {
 		common.ApiErrorMsg(c, "完成订单失败："+err.Error())

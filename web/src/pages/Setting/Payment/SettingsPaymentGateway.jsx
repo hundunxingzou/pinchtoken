@@ -43,8 +43,6 @@ export default function SettingsPaymentGateway(props) {
     PayMethods: '',
     AmountOptions: '',
     AmountDiscount: '',
-    MetaMaskWalletAddress: '',
-    MetaMaskMinTopUp: 1,
   });
   const [originInputs, setOriginInputs] = useState({});
   const formApiRef = useRef(null);
@@ -68,11 +66,6 @@ export default function SettingsPaymentGateway(props) {
         PayMethods: props.options.PayMethods || '',
         AmountOptions: props.options.AmountOptions || '',
         AmountDiscount: props.options.AmountDiscount || '',
-        MetaMaskWalletAddress: props.options.MetaMaskWalletAddress || '',
-        MetaMaskMinTopUp:
-          props.options.MetaMaskMinTopUp !== undefined
-            ? parseInt(props.options.MetaMaskMinTopUp)
-            : 1,
       };
 
       // 美化 JSON 展示
@@ -185,20 +178,6 @@ export default function SettingsPaymentGateway(props) {
         options.push({
           key: 'payment_setting.amount_discount',
           value: inputs.AmountDiscount,
-        });
-      }
-      if (
-        originInputs['MetaMaskWalletAddress'] !== inputs.MetaMaskWalletAddress
-      ) {
-        options.push({
-          key: 'MetaMaskWalletAddress',
-          value: inputs.MetaMaskWalletAddress || '',
-        });
-      }
-      if (originInputs['MetaMaskMinTopUp'] !== inputs.MetaMaskMinTopUp) {
-        options.push({
-          key: 'MetaMaskMinTopUp',
-          value: String(inputs.MetaMaskMinTopUp || 1),
         });
       }
 
@@ -345,47 +324,6 @@ export default function SettingsPaymentGateway(props) {
             </Col>
           </Row>
 
-            <div
-              style={{
-                marginTop: 20,
-                padding: 16,
-                borderRadius: 8,
-                border: '1px solid var(--semi-color-border)',
-                background: 'var(--semi-color-fill-0)',
-              }}
-            >
-              <Text strong style={{ fontSize: 16 }}>
-                {t('USD 钱包支付设置')}
-              </Text>
-              <div style={{ marginTop: 8, marginBottom: 12 }}>
-                <Text type='secondary'>
-                  {t(
-                    '填写收款钱包地址后，用户可在充值页向该地址转入 USD 稳定币（USDT/USDC 等）完成充值。',
-                  )}
-                </Text>
-              </div>
-              <Row
-                gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}
-              >
-                <Col xs={24} sm={24} md={16} lg={16} xl={16}>
-                  <Form.Input
-                    field='MetaMaskWalletAddress'
-                    label={t('收款钱包地址')}
-                    placeholder={t('填写支持 USDT/USDC 的钱包地址')}
-                    extraText={t('用户将向此地址转账，请确保地址正确')}
-                  />
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                  <Form.InputNumber
-                    field='MetaMaskMinTopUp'
-                    label={t('最低充值金额（USD）')}
-                    min={1}
-                    precision={0}
-                    placeholder='1'
-                  />
-                </Col>
-              </Row>
-            </div>
 
           <Button onClick={submitPayAddress}>{t('更新支付设置')}</Button>
         </Form.Section>

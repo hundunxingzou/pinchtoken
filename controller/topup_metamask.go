@@ -14,7 +14,7 @@ import (
 )
 
 type WalletTopUpRequest struct {
-	Amount int64 `json:"amount"` // USD 充值金额
+	Amount int64 `json:"amount"` // 充值代币数量（整数）
 }
 
 type WalletVerifyRequest struct {
@@ -22,10 +22,14 @@ type WalletVerifyRequest struct {
 	TxHash  string `json:"tx_hash"`  // 转账凭证（哈希或截图说明）
 }
 
-// RequestMetaMaskTopUp 创建 USD 钱包充值订单，返回收款地址和 USD 金额
+// RequestMetaMaskTopUp 创建钱包转账代币充值订单
 func RequestMetaMaskTopUp(c *gin.Context) {
 	if setting.MetaMaskWalletAddress == "" {
 		common.ApiErrorMsg(c, "管理员未配置收款钱包地址")
+		return
+	}
+	if setting.MetaMaskTokenContractAddress == "" || setting.MetaMaskTokenDecimals <= 0 {
+		common.ApiErrorMsg(c, "管理员未配置代币合约或 decimals")
 		return
 	}
 
@@ -37,26 +41,16 @@ func RequestMetaMaskTopUp(c *gin.Context) {
 
 	minTopUp := int64(setting.MetaMaskMinTopUp)
 	if req.Amount < minTopUp {
-		common.ApiErrorMsg(c, fmt.Sprintf("充值金额不能小于 %d USD", minTopUp))
+		common.ApiErrorMsg(c, fmt.Sprintf("充值数量不能小于 %d", minTopUp))
 		return
 	}
 
 	userId := c.GetInt("id")
-	group, err := model.GetUserGroup(userId, true)
+	_, err := model.GetUserGroup(userId, true)
 	if err != nil {
 		common.ApiErrorMsg(c, "获取用户分组失败")
 		return
 	}
-
-	// 计算实际 USD 金额（含分组倍率）
-	topupGroupRatio := common.GetTopupGroupRatio(group)
-	if topupGroupRatio == 0 {
-		topupGroupRatio = 1
-	}
-
-	dAmount := decimal.NewFromInt(req.Amount)
-	dRate := decimal.NewFromFloat(topupGroupRatio)
-	usdAmount := dAmount.Mul(dRate).InexactFloat64()
 
 	// 生成唯一订单号
 	tradeNo := fmt.Sprintf("WALLETUS%dNO%s%d", userId, common.GetRandomString(6), time.Now().Unix())
@@ -65,7 +59,7 @@ func RequestMetaMaskTopUp(c *gin.Context) {
 	topUp := &model.TopUp{
 		UserId:        userId,
 		Amount:        req.Amount,
-		Money:         usdAmount,
+		Money:         0,
 		TradeNo:       tradeNo,
 		PaymentMethod: "wallet",
 		CreateTime:    time.Now().Unix(),
@@ -81,7 +75,10 @@ func RequestMetaMaskTopUp(c *gin.Context) {
 		"data": gin.H{
 			"trade_no":       tradeNo,
 			"wallet_address": setting.MetaMaskWalletAddress,
-			"usd_amount":     usdAmount,
+			"chain":          setting.MetaMaskChain,
+			"token_contract_address": setting.MetaMaskTokenContractAddress,
+			"token_decimals": setting.MetaMaskTokenDecimals,
+			"token_amount":   req.Amount,
 		},
 	})
 }
@@ -117,9 +114,21 @@ func VerifyMetaMaskTopUp(c *gin.Context) {
 		return
 	}
 
-	// 直接完成订单（线下转账，系统自动信任）
+
+	if model.HasWalletTopUpTxHash(req.TxHash) {
+		common.ApiErrorMsg(c, "该交易哈希已被使用")
+		return
+	}
+
+	if err := verifyWalletTokenTransferOnChain(req.TxHash, setting.MetaMaskTokenContractAddress, setting.MetaMaskWalletAddress, topUp.Amount, setting.MetaMaskTokenDecimals, setting.MetaMaskChain, setting.MetaMaskEthRpcUrl, setting.MetaMaskBscRpcUrl); err != nil {
+		common.ApiErrorMsg(c, err.Error())
+		return
+	}
+
+	// 完成订单
 	topUp.Status = "success"
 	topUp.CompleteTime = time.Now().Unix()
+	topUp.ProviderPayload = req.TxHash
 	if err := topUp.Update(); err != nil {
 		common.ApiErrorMsg(c, "更新订单失败")
 		return
@@ -135,7 +144,7 @@ func VerifyMetaMaskTopUp(c *gin.Context) {
 	}
 
 	model.RecordLog(topUp.UserId, model.LogTypeTopup,
-		fmt.Sprintf("USD 钱包充值成功，充值额度: %v，凭证：%s", logger.LogQuota(quotaToAdd), req.TxHash))
+		fmt.Sprintf("代币钱包充值成功，充值额度: %v，tx: %s", logger.LogQuota(quotaToAdd), req.TxHash))
 
 	common.ApiSuccess(c, gin.H{"quota": quotaToAdd})
 }

@@ -91,6 +91,11 @@ func InitOptionMap() {
 	common.OptionMap["CreemWebhookSecret"] = setting.CreemWebhookSecret
 	common.OptionMap["MetaMaskWalletAddress"] = setting.MetaMaskWalletAddress
 	common.OptionMap["MetaMaskMinTopUp"] = strconv.Itoa(setting.MetaMaskMinTopUp)
+	common.OptionMap["MetaMaskChain"] = setting.MetaMaskChain
+	common.OptionMap["MetaMaskTokenContractAddress"] = setting.MetaMaskTokenContractAddress
+	common.OptionMap["MetaMaskTokenDecimals"] = strconv.Itoa(setting.MetaMaskTokenDecimals)
+	common.OptionMap["MetaMaskEthRpcUrl"] = setting.MetaMaskEthRpcUrl
+	common.OptionMap["MetaMaskBscRpcUrl"] = setting.MetaMaskBscRpcUrl
 	common.OptionMap["TopupGroupRatio"] = common.TopupGroupRatio2JSONString()
 	common.OptionMap["Chats"] = setting.Chats2JsonString()
 	common.OptionMap["AutoGroups"] = setting.AutoGroups2JsonString()
@@ -364,6 +369,16 @@ func updateOptionMap(key string, value string) (err error) {
 		setting.MetaMaskWalletAddress = value
 	case "MetaMaskMinTopUp":
 		setting.MetaMaskMinTopUp, _ = strconv.Atoi(value)
+	case "MetaMaskChain":
+		setting.MetaMaskChain = value
+	case "MetaMaskTokenContractAddress":
+		setting.MetaMaskTokenContractAddress = value
+	case "MetaMaskTokenDecimals":
+		setting.MetaMaskTokenDecimals, _ = strconv.Atoi(value)
+	case "MetaMaskEthRpcUrl":
+		setting.MetaMaskEthRpcUrl = value
+	case "MetaMaskBscRpcUrl":
+		setting.MetaMaskBscRpcUrl = value
 	case "TopupGroupRatio":
 		err = common.UpdateTopupGroupRatioByJSONString(value)
 	case "GitHubClientId":

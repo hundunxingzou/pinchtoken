@@ -1,12 +1,8 @@
-FROM oven/bun:latest AS builder
+FROM debian:bookworm-slim AS webdist
 
 WORKDIR /build
-COPY web/package.json .
-COPY web/bun.lock .
-RUN bun install
-COPY ./web .
-COPY ./VERSION .
-RUN DISABLE_ESLINT_PLUGIN='true' VITE_REACT_APP_VERSION=$(cat VERSION) bun run build
+# web/dist is built on the host (outside Docker)
+COPY web/dist ./dist
 
 FROM golang:alpine AS builder2
 ENV GO111MODULE=on CGO_ENABLED=0
@@ -22,7 +18,7 @@ ADD go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-COPY --from=builder /build/dist ./web/dist
+COPY --from=webdist /build/dist ./web/dist
 RUN go build -ldflags "-s -w -X 'github.com/QuantumNous/new-api/common.Version=$(cat VERSION)'" -o new-api
 
 FROM debian:bookworm-slim

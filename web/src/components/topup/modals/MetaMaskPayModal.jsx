@@ -87,8 +87,8 @@ const MetaMaskPayModal = ({
         trade_no: tradeNo,
         tx_hash: hash,
       });
-      const { message, data } = res.data;
-      if (message === 'success') {
+      const { success, message, data } = res.data;
+      if (success) {
         showSuccess(t('充值成功！'));
         onSuccess?.(data?.quota);
         handleClose();

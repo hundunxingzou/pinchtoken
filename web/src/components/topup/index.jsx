@@ -336,8 +336,8 @@ const TopUp = () => {
       const res = await API.post('/api/user/metamask/pay', {
         amount: parseInt(topUpCount),
       });
-      const { message, data } = res.data;
-      if (message === 'success') {
+      const { success, message, data } = res.data;
+      if (success) {
         setMetaMaskPayInfo({
           tradeNo: data.trade_no,
           walletAddress: data.wallet_address,

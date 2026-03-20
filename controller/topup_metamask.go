@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/QuantumNous/new-api/common"
@@ -70,16 +69,19 @@ func RequestMetaMaskTopUp(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "success",
-		"data": gin.H{
-			"trade_no":       tradeNo,
-			"wallet_address": setting.MetaMaskWalletAddress,
-			"chain":          setting.MetaMaskChain,
-			"token_contract_address": setting.MetaMaskTokenContractAddress,
-			"token_decimals": setting.MetaMaskTokenDecimals,
-			"token_amount":   req.Amount,
-		},
+	common.ApiSuccess(c, gin.H{
+		"trade_no":       tradeNo,
+		"wallet_address": setting.MetaMaskWalletAddress,
+		"chain":          setting.MetaMaskChain,
+		"chain_id": func() int {
+			if setting.MetaMaskChain == "bsc" {
+				return 56
+			}
+			return 1
+		}(),
+		"token_contract_address": setting.MetaMaskTokenContractAddress,
+		"token_decimals": setting.MetaMaskTokenDecimals,
+		"token_amount":   req.Amount,
 	})
 }
 

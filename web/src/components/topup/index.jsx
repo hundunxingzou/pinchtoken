@@ -331,6 +331,9 @@ const TopUp = () => {
       showError(t('充值数量不能小于') + minTopUp);
       return;
     }
+    if (paymentLoading) {
+      return;
+    }
     setPaymentLoading(true);
     try {
       const res = await API.post('/api/user/metamask/pay', {
@@ -342,6 +345,7 @@ const TopUp = () => {
           tradeNo: data.trade_no,
           walletAddress: data.wallet_address,
           chain: data.chain,
+          chainId: data.chain_id,
           tokenContractAddress: data.token_contract_address,
           tokenDecimals: data.token_decimals,
           tokenAmount: data.token_amount,
@@ -352,6 +356,10 @@ const TopUp = () => {
         showError(errMsg);
       }
     } catch (err) {
+      if (err?.response?.status === 429) {
+        showError(t('请求过于频繁，请稍后再试'));
+        return;
+      }
       showError(t('请求失败'));
     } finally {
       setPaymentLoading(false);
@@ -791,6 +799,7 @@ const TopUp = () => {
           chain={metaMaskPayInfo.chain}
           tokenContractAddress={metaMaskPayInfo.tokenContractAddress}
           tokenDecimals={metaMaskPayInfo.tokenDecimals}
+          chainId={metaMaskPayInfo.chainId}
           onSuccess={handleMetaMaskSuccess}
         />
       )}

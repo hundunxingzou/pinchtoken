@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Modal,
   Button,
@@ -26,9 +26,9 @@ import {
   Banner,
   Spin,
   Steps,
-  Tag,
 } from '@douyinfe/semi-ui';
-import { API, showError, showSuccess } from '../../../helpers';
+import { ethers } from 'ethers';
+import { API, showSuccess } from '../../../helpers';
 
 const { Text, Title, Paragraph } = Typography;
 
@@ -42,6 +42,7 @@ const { Text, Title, Paragraph } = Typography;
  *   walletAddress        - 收款地址
  *   tokenAmount          - 需要支付的 token 数量（整数）
  *   chain                - 链（eth|bsc）
+ *   chainId              - EVM chainId（ETH=1, BSC=56）
  *   tokenContractAddress - token 合约地址
  *   tokenDecimals        - token decimals
  *   onSuccess            - 支付成功回调
@@ -55,16 +56,30 @@ const MetaMaskPayModal = ({
   walletAddress,
   tokenAmount,
   chain,
+  chainId,
   tokenContractAddress,
   tokenDecimals,
   onSuccess,
   t,
   apiVerifyPath = '/api/user/metamask/verify',
 }) => {
-  const [step, setStep] = useState(0); // 0=准备 1=已转账待提交
+  const [step, setStep] = useState(0); // 0=钱包支付 1=手动验证
   const [txHash, setTxHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [autoTxHash, setAutoTxHash] = useState('');
+
+  const hasInjectedWallet = typeof window !== 'undefined' && !!window.ethereum;
+
+  const transferAmountBaseUnits = useMemo(() => {
+    try {
+      if (tokenAmount === undefined || tokenAmount === null) return null;
+      if (tokenDecimals === undefined || tokenDecimals === null) return null;
+      return ethers.parseUnits(String(tokenAmount), Number(tokenDecimals));
+    } catch (e) {
+      return null;
+    }
+  }, [tokenAmount, tokenDecimals]);
 
   const reset = () => {
     setStep(0);
@@ -80,21 +95,56 @@ const MetaMaskPayModal = ({
 
   // 提交转账凭证到后端
   const verifyTransaction = async (hash) => {
+    const res = await API.post(apiVerifyPath, {
+      trade_no: tradeNo,
+      tx_hash: hash,
+    });
+    const { success, message, data } = res.data;
+    if (success) {
+      showSuccess(t('充值成功！'));
+      onSuccess?.(data?.quota);
+      handleClose();
+      return { ok: true };
+    }
+    const errMsg = typeof data === 'string' ? data : message || t('验证失败');
+    return { ok: false, error: errMsg };
+  };
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const verifyWithRetry = async (hash) => {
     setLoading(true);
     setError('');
     try {
-      const res = await API.post(apiVerifyPath, {
-        trade_no: tradeNo,
-        tx_hash: hash,
-      });
-      const { success, message, data } = res.data;
-      if (success) {
-        showSuccess(t('充值成功！'));
-        onSuccess?.(data?.quota);
-        handleClose();
-      } else {
-        const errMsg = typeof data === 'string' ? data : message || t('验证失败');
-        setError(errMsg);
+      const maxWaitMs = 120000;
+      const start = Date.now();
+      let delay = 1500;
+
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const result = await verifyTransaction(hash);
+        if (result.ok) return;
+
+        const errText = String(result.error || '');
+        // Non-retryable errors
+        if (
+          errText.includes('该交易哈希已被使用') ||
+          errText.includes('订单已完成') ||
+          errText.includes('订单不存在') ||
+          errText.includes('订单状态异常')
+        ) {
+          setError(errText || t('验证失败'));
+          return;
+        }
+
+        const elapsed = Date.now() - start;
+        if (elapsed >= maxWaitMs) {
+          setError(errText || t('验证失败'));
+          return;
+        }
+
+        await sleep(delay);
+        delay = Math.min(Math.floor(delay * 1.6), 10000);
       }
     } catch (err) {
       setError(t('提交失败，请稍后重试或联系管理员'));
@@ -104,17 +154,78 @@ const MetaMaskPayModal = ({
   };
 
   const handleSubmit = async () => {
-    if (!txHash || txHash.trim().length < 4) {
+    const hash = txHash?.trim();
+    if (!hash || hash.length < 4) {
       setError(t('请输入转账凭证（交易哈希或备注）'));
       return;
     }
-    await verifyTransaction(txHash.trim());
+    await verifyWithRetry(hash);
+  };
+
+  const switchChainIfNeeded = async (ethereum, targetChainId) => {
+    if (!targetChainId) return;
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: ethers.toBeHex(Number(targetChainId)) }],
+      });
+    } catch (e) {
+      // 4902 = chain not added; we don't add chain here (non-goal)
+      throw new Error(t('无法自动切换网络，请在钱包中手动切换后重试'));
+    }
+  };
+
+  const handleWalletPay = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      if (!hasInjectedWallet) {
+        setError(t('未检测到浏览器钱包插件，请安装/启用后重试'));
+        return;
+      }
+      if (!walletAddress || !tokenContractAddress) {
+        setError(t('支付配置缺失，请联系管理员'));
+        return;
+      }
+      if (!transferAmountBaseUnits) {
+        setError(t('金额/decimals 配置异常，请联系管理员'));
+        return;
+      }
+      const ethereum = window.ethereum;
+      await ethereum.request({ method: 'eth_requestAccounts' });
+      await switchChainIfNeeded(ethereum, chainId);
+
+      const provider = new ethers.BrowserProvider(ethereum);
+      const signer = await provider.getSigner();
+      const erc20 = new ethers.Contract(
+        tokenContractAddress,
+        ['function transfer(address to, uint256 amount) returns (bool)'],
+        signer,
+      );
+
+      const tx = await erc20.transfer(walletAddress, transferAmountBaseUnits);
+      setAutoTxHash(tx?.hash || '');
+      if (tx?.hash) {
+        await verifyWithRetry(tx.hash);
+      } else {
+        setError(t('未获取到交易哈希，请在钱包中确认交易是否已发送'));
+      }
+    } catch (e) {
+      const code = e?.code;
+      const msg = String(e?.message || '');
+      if (code === 4001 || msg.toLowerCase().includes('user rejected')) {
+        setError(t('用户取消了支付'));
+      } else {
+        setError(e?.message || t('发起支付失败'));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const stepList = [
-    { title: t('查看收款地址'), description: t('复制收款钱包地址') },
-    { title: t('完成转账'), description: t('向收款地址转入代币') },
-    { title: t('提交凭证'), description: t('输入交易哈希完成确认') },
+    { title: t('钱包支付'), description: t('使用浏览器钱包发起转账') },
+    { title: t('手动验证'), description: t('自动模式失败时可手动提交交易哈希') },
   ];
 
   return (
@@ -201,16 +312,38 @@ const MetaMaskPayModal = ({
 
           {/* 操作区域 */}
           {step === 0 && (
-            <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
-              <Button onClick={handleClose}>{t('取消')}</Button>
-              <Button
-                type='primary'
-                theme='solid'
-                style={{ background: '#2e7d32', borderColor: '#2e7d32' }}
-                onClick={() => setStep(1)}
-              >
-                {t('我已复制地址，去转账')}
-              </Button>
+            <Space vertical style={{ width: '100%' }} spacing={12}>
+              {!hasInjectedWallet && (
+                <Banner
+                  type='warning'
+                  description={t('未检测到浏览器钱包插件（window.ethereum），请安装/启用后再试。')}
+                  closeIcon={null}
+                />
+              )}
+              {autoTxHash && (
+                <Banner
+                  type='info'
+                  description={
+                    <span>
+                      {t('已发起交易')}：<Text code>{autoTxHash}</Text>
+                    </span>
+                  }
+                  closeIcon={null}
+                />
+              )}
+              <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+                <Button onClick={handleClose}>{t('取消')}</Button>
+                <Button onClick={() => setStep(1)}>{t('手动输入 tx hash')}</Button>
+                <Button
+                  type='primary'
+                  theme='solid'
+                  style={{ background: '#2e7d32', borderColor: '#2e7d32' }}
+                  onClick={handleWalletPay}
+                  disabled={!hasInjectedWallet}
+                >
+                  {t('连接钱包并支付')}
+                </Button>
+              </Space>
             </Space>
           )}
 

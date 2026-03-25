@@ -500,15 +500,22 @@ const TopUp = () => {
           const enableStripeTopUp = data.enable_stripe_topup || false;
           const enableOnlineTopUp = data.enable_online_topup || false;
           const enableCreemTopUp = data.enable_creem_topup || false;
-          const minTopUpValue = enableOnlineTopUp
-            ? data.min_topup
-            : enableStripeTopUp
-              ? data.stripe_min_topup
-              : 1;
+          const enableMetaMaskTopUp = data.enable_metamask_topup || false;
+
+          // 确定最小充值数量：优先使用启用的支付方式的最小充值数
+          let minTopUpValue = 1;
+          if (enableOnlineTopUp) {
+            minTopUpValue = data.min_topup;
+          } else if (enableStripeTopUp) {
+            minTopUpValue = data.stripe_min_topup;
+          } else if (enableMetaMaskTopUp) {
+            minTopUpValue = data.metamask_min_topup || 1;
+          }
+
           setEnableOnlineTopUp(enableOnlineTopUp);
           setEnableStripeTopUp(enableStripeTopUp);
           setEnableCreemTopUp(enableCreemTopUp);
-          setEnableMetaMaskTopUp(data.enable_metamask_topup || false);
+          setEnableMetaMaskTopUp(enableMetaMaskTopUp);
           setMinTopUp(minTopUpValue);
           setTopUpCount(minTopUpValue);
 

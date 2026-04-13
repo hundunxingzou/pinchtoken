@@ -123,7 +123,8 @@ export function showError(error) {
   console.error(error);
   if (error.message) {
     if (error.name === 'AxiosError') {
-      switch (error.response.status) {
+      const status = error.response?.status;
+      switch (status) {
         case 401:
           // 清除用户状态
           localStorage.removeItem('user');
@@ -140,7 +141,8 @@ export function showError(error) {
           Toast.info('本站仅作演示之用，无服务端！');
           break;
         default:
-          Toast.error('错误：' + error.message);
+          // Axios 网络错误（超时/断网）可能没有 response，需要兜底避免空指针
+          Toast.error('错误：' + (error.message || '网络请求失败'));
       }
       return;
     }

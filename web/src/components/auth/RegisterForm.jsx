@@ -88,7 +88,7 @@ const RegisterForm = () => {
   const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
   const [showWeChatLoginModal, setShowWeChatLoginModal] = useState(false);
-  const [showEmailRegister, setShowEmailRegister] = useState(false);
+  const [showEmailRegister, setShowEmailRegister] = useState(true);
   const [wechatLoading, setWechatLoading] = useState(false);
   const [githubLoading, setGithubLoading] = useState(false);
   const [discordLoading, setDiscordLoading] = useState(false);
@@ -692,26 +692,6 @@ const RegisterForm = () => {
                 </div>
               </Form>
 
-              {hasOAuthRegisterOptions && (
-                <>
-                  <Divider margin='12px' align='center'>
-                    {t('或')}
-                  </Divider>
-
-                  <div className='mt-4 text-center'>
-                    <Button
-                      theme='outline'
-                      type='tertiary'
-                      className='w-full !rounded-full'
-                      onClick={handleOtherRegisterOptionsClick}
-                      loading={otherRegisterOptionsLoading}
-                    >
-                      {t('其他注册选项')}
-                    </Button>
-                  </div>
-                </>
-              )}
-
               <div className='mt-6 text-center text-sm'>
                 <Text>
                   {t('已有账户？')}{' '}
@@ -781,10 +761,7 @@ const RegisterForm = () => {
         style={{ top: '50%', left: '-120px' }}
       />
       <div className='w-full max-w-sm mt-[60px]'>
-        {showEmailRegister ||
-        !hasOAuthRegisterOptions
-          ? renderEmailRegisterForm()
-          : renderOAuthOptions()}
+        {renderEmailRegisterForm()}
         {renderWeChatLoginModal()}
 
         {turnstileEnabled && (

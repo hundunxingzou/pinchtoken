@@ -47,6 +47,17 @@ const { Text } = Typography;
 
 // Preset templates for common OAuth providers
 const OAUTH_PRESETS = {
+  google: {
+    name: 'Google',
+    authorization_endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+    token_endpoint: 'https://oauth2.googleapis.com/token',
+    user_info_endpoint: 'https://openidconnect.googleapis.com/v1/userinfo',
+    scopes: 'openid profile email',
+    user_id_field: 'sub',
+    username_field: 'email',
+    display_name_field: 'name',
+    email_field: 'email',
+  },
   'github-enterprise': {
     name: 'GitHub Enterprise',
     authorization_endpoint: '/login/oauth/authorize',
@@ -127,6 +138,7 @@ const OAUTH_PRESETS = {
 };
 
 const OAUTH_PRESET_ICONS = {
+  google: 'google',
   'github-enterprise': 'github',
   gitlab: 'gitlab',
   gitea: 'gitea',
@@ -603,7 +615,7 @@ const CustomOAuthSetting = ({ serverAddress }) => {
           description={
             <>
               {t(
-                '配置自定义 OAuth 提供商，支持 GitHub Enterprise、GitLab、Gitea、Nextcloud、Keycloak、ORY 等兼容 OAuth 2.0 协议的身份提供商'
+                '配置自定义 OAuth 提供商，支持 Google、GitHub Enterprise、GitLab、Gitea、Nextcloud、Keycloak、ORY 等兼容 OAuth 2.0 协议的身份提供商'
               )}
               <br />
               {t('回调 URL 格式')}: {serverAddress || t('网站地址')}/oauth/

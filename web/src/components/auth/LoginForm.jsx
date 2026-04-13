@@ -89,7 +89,7 @@ const LoginForm = () => {
   const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
   const [showWeChatLoginModal, setShowWeChatLoginModal] = useState(false);
-  const [showEmailLogin, setShowEmailLogin] = useState(false);
+  const [showEmailLogin, setShowEmailLogin] = useState(true);
   const [wechatLoading, setWechatLoading] = useState(false);
   const [githubLoading, setGithubLoading] = useState(false);
   const [discordLoading, setDiscordLoading] = useState(false);
@@ -100,6 +100,7 @@ const LoginForm = () => {
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
   const [otherLoginOptionsLoading, setOtherLoginOptionsLoading] =
     useState(false);
+  const [showOtherLoginOptions, setShowOtherLoginOptions] = useState(false);
   const [wechatCodeSubmitLoading, setWechatCodeSubmitLoading] = useState(false);
   const [showTwoFA, setShowTwoFA] = useState(false);
   const [passkeySupported, setPasskeySupported] = useState(false);
@@ -142,6 +143,68 @@ const LoginForm = () => {
       status.telegram_oauth ||
       hasCustomOAuthProviders,
   );
+  const customOAuthProviders = status.custom_oauth_providers || [];
+  const googleCustomOAuthProvider = customOAuthProviders.find(
+    (provider) => (provider.slug || '').toLowerCase() === 'google',
+  );
+  const nonGoogleCustomOAuthProviders = customOAuthProviders.filter(
+    (provider) => (provider.slug || '').toLowerCase() !== 'google',
+  );
+
+  const thirdPartyLoginOptions = useMemo(() => {
+    const options = [];
+    if (status.wechat_login) options.push({ key: 'wechat', type: 'wechat' });
+    if (status.github_oauth) options.push({ key: 'github', type: 'github' });
+    if (status.discord_oauth) options.push({ key: 'discord', type: 'discord' });
+    if (status.oidc_enabled) options.push({ key: 'oidc', type: 'oidc' });
+    if (status.linuxdo_oauth) options.push({ key: 'linuxdo', type: 'linuxdo' });
+    if (status.telegram_oauth) options.push({ key: 'telegram', type: 'telegram' });
+    if (googleCustomOAuthProvider) {
+      options.push({
+        key: `custom:${googleCustomOAuthProvider.slug}`,
+        type: 'custom',
+        provider: googleCustomOAuthProvider,
+      });
+    }
+    nonGoogleCustomOAuthProviders.forEach((provider) => {
+      options.push({
+        key: `custom:${provider.slug}`,
+        type: 'custom',
+        provider,
+      });
+    });
+    return options;
+  }, [
+    status.wechat_login,
+    status.github_oauth,
+    status.discord_oauth,
+    status.oidc_enabled,
+    status.linuxdo_oauth,
+    status.telegram_oauth,
+    googleCustomOAuthProvider,
+    nonGoogleCustomOAuthProviders,
+  ]);
+
+  const primaryThirdPartyOption = useMemo(() => {
+    if (thirdPartyLoginOptions.length <= 1) {
+      return thirdPartyLoginOptions[0] || null;
+    }
+    const googleOption = thirdPartyLoginOptions.find(
+      (option) =>
+        option.type === 'custom' &&
+        (option.provider?.slug || '').toLowerCase() === 'google',
+    );
+    return googleOption || thirdPartyLoginOptions[0];
+  }, [thirdPartyLoginOptions]);
+
+  const additionalThirdPartyOptions = useMemo(() => {
+    if (thirdPartyLoginOptions.length <= 1 || !primaryThirdPartyOption) {
+      return [];
+    }
+    return thirdPartyLoginOptions.filter(
+      (option) => option.key !== primaryThirdPartyOption.key,
+    );
+  }, [thirdPartyLoginOptions, primaryThirdPartyOption]);
 
   useEffect(() => {
     if (status?.turnstile_check) {
@@ -481,7 +544,7 @@ const LoginForm = () => {
   // 包装的其他登录选项点击处理
   const handleOtherLoginOptionsClick = () => {
     setOtherLoginOptionsLoading(true);
-    setShowEmailLogin(false);
+    setShowOtherLoginOptions((prev) => !prev);
     setOtherLoginOptionsLoading(false);
   };
 
@@ -498,6 +561,133 @@ const LoginForm = () => {
   const handleBackToLogin = () => {
     setShowTwoFA(false);
     setInputs({ username: '', password: '', wechat_verification_code: '' });
+  };
+
+  const renderThirdPartyLoginButton = (option, withBottomSpacing = false) => {
+    if (!option) return null;
+    const className = `w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors${
+      withBottomSpacing ? ' mb-4' : ''
+    }`;
+    if (option.type === 'wechat') {
+      return (
+        <Button
+          key={option.key}
+          theme='outline'
+          className={className}
+          type='tertiary'
+          icon={<Icon svg={<WeChatIcon />} style={{ color: '#07C160' }} />}
+          onClick={onWeChatLoginClicked}
+          loading={wechatLoading}
+        >
+          <span className='ml-3'>{t('使用 微信 继续')}</span>
+        </Button>
+      );
+    }
+    if (option.type === 'github') {
+      return (
+        <Button
+          key={option.key}
+          theme='outline'
+          className={className}
+          type='tertiary'
+          icon={<IconGithubLogo size='large' />}
+          onClick={handleGitHubClick}
+          loading={githubLoading}
+          disabled={githubButtonDisabled}
+        >
+          <span className='ml-3'>{githubButtonText}</span>
+        </Button>
+      );
+    }
+    if (option.type === 'discord') {
+      return (
+        <Button
+          key={option.key}
+          theme='outline'
+          className={className}
+          type='tertiary'
+          icon={
+            <SiDiscord
+              style={{
+                color: '#5865F2',
+                width: '20px',
+                height: '20px',
+              }}
+            />
+          }
+          onClick={handleDiscordClick}
+          loading={discordLoading}
+        >
+          <span className='ml-3'>{t('使用 Discord 继续')}</span>
+        </Button>
+      );
+    }
+    if (option.type === 'oidc') {
+      return (
+        <Button
+          key={option.key}
+          theme='outline'
+          className={className}
+          type='tertiary'
+          icon={<OIDCIcon style={{ color: '#1877F2' }} />}
+          onClick={handleOIDCClick}
+          loading={oidcLoading}
+        >
+          <span className='ml-3'>{t('使用 OIDC 继续')}</span>
+        </Button>
+      );
+    }
+    if (option.type === 'linuxdo') {
+      return (
+        <Button
+          key={option.key}
+          theme='outline'
+          className={className}
+          type='tertiary'
+          icon={
+            <LinuxDoIcon
+              style={{
+                color: '#E95420',
+                width: '20px',
+                height: '20px',
+              }}
+            />
+          }
+          onClick={handleLinuxDOClick}
+          loading={linuxdoLoading}
+        >
+          <span className='ml-3'>{t('使用 LinuxDO 继续')}</span>
+        </Button>
+      );
+    }
+    if (option.type === 'telegram') {
+      return (
+        <div key={option.key} className='flex justify-center my-2'>
+          <TelegramLoginButton
+            dataOnauth={onTelegramLoginClicked}
+            botName={status.telegram_bot_name}
+          />
+        </div>
+      );
+    }
+    if (option.type === 'custom' && option.provider) {
+      return (
+        <Button
+          key={option.key}
+          theme='outline'
+          className={className}
+          type='tertiary'
+          icon={getOAuthProviderIcon(option.provider.icon || '', 20)}
+          onClick={() => handleCustomOAuthClick(option.provider)}
+          loading={customOAuthLoading[option.provider.slug]}
+        >
+          <span className='ml-3'>
+            {t('使用 {{name}} 继续', { name: option.provider.name })}
+          </span>
+        </Button>
+      );
+    }
+    return null;
   };
 
   const renderOAuthOptions = () => {
@@ -836,15 +1026,32 @@ const LoginForm = () => {
                   </Divider>
 
                   <div className='mt-4 text-center'>
-                    <Button
-                      theme='outline'
-                      type='tertiary'
-                      className='w-full !rounded-full'
-                      onClick={handleOtherLoginOptionsClick}
-                      loading={otherLoginOptionsLoading}
-                    >
-                      {t('其他登录选项')}
-                    </Button>
+                    {thirdPartyLoginOptions.length === 1 &&
+                      renderThirdPartyLoginButton(primaryThirdPartyOption)}
+
+                    {thirdPartyLoginOptions.length > 1 && (
+                      <div className='space-y-3'>
+                        {renderThirdPartyLoginButton(primaryThirdPartyOption)}
+
+                        <Button
+                          theme='outline'
+                          type='tertiary'
+                          className='w-full !rounded-full'
+                          onClick={handleOtherLoginOptionsClick}
+                          loading={otherLoginOptionsLoading}
+                        >
+                          {t('其他登录选项')}
+                        </Button>
+
+                        {showOtherLoginOptions && (
+                          <div className='space-y-3'>
+                            {additionalThirdPartyOptions.map((option) =>
+                              renderThirdPartyLoginButton(option),
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </>
               )}

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -197,10 +198,24 @@ func handleOAuthBind(c *gin.Context, provider oauth.Provider) {
 func findOrCreateOAuthUser(c *gin.Context, provider oauth.Provider, oauthUser *oauth.OAuthUser, session sessions.Session) (*model.User, error) {
 	user := &model.User{}
 
+	// For custom OAuth providers, proactively clean dangling bindings
+	// (binding exists but target user was deleted) before login lookup.
+	if genericProvider, ok := provider.(*oauth.GenericOAuthProvider); ok {
+		if cleaned, err := model.CleanupOrphanedUserOAuthBinding(genericProvider.GetProviderId(), oauthUser.ProviderUserID); err != nil {
+			return nil, err
+		} else if cleaned {
+			common.SysLog(fmt.Sprintf("[OAuth] cleaned orphaned binding for provider=%s, provider_user_id=%s",
+				provider.GetName(), oauthUser.ProviderUserID))
+		}
+	}
+
 	// Check if user already exists with new ID
 	if provider.IsUserIDTaken(oauthUser.ProviderUserID) {
 		err := provider.FillUserByProviderID(user, oauthUser.ProviderUserID)
 		if err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return nil, &OAuthUserDeletedError{}
+			}
 			return nil, err
 		}
 		// Check if user has been deleted
@@ -212,6 +227,11 @@ func findOrCreateOAuthUser(c *gin.Context, provider oauth.Provider, oauthUser *o
 
 	// Try to find user with legacy ID (for GitHub migration from login to numeric ID)
 	if legacyID, ok := oauthUser.Extra["legacy_id"].(string); ok && legacyID != "" {
+		if genericProvider, ok := provider.(*oauth.GenericOAuthProvider); ok {
+			if _, err := model.CleanupOrphanedUserOAuthBinding(genericProvider.GetProviderId(), legacyID); err != nil {
+				return nil, err
+			}
+		}
 		if provider.IsUserIDTaken(legacyID) {
 			err := provider.FillUserByProviderID(user, legacyID)
 			if err != nil {

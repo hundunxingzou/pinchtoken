@@ -145,3 +145,37 @@ func GetBindingCountByProviderId(providerId int) (int64, error) {
 	err := DB.Model(&UserOAuthBinding{}).Where("provider_id = ?", providerId).Count(&count).Error
 	return count, err
 }
+
+// CleanupOrphanedUserOAuthBinding removes a binding when its target user
+// no longer exists or has been soft-deleted. Returns true if a cleanup happened.
+func CleanupOrphanedUserOAuthBinding(providerId int, providerUserId string) (bool, error) {
+	var binding UserOAuthBinding
+	err := DB.Where("provider_id = ? AND provider_user_id = ?", providerId, providerUserId).First(&binding).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	var user User
+	err = DB.Unscoped().Select("id", "deleted_at").First(&user, binding.UserId).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			if delErr := DB.Delete(&binding).Error; delErr != nil {
+				return false, delErr
+			}
+			return true, nil
+		}
+		return false, err
+	}
+
+	if user.DeletedAt.Valid {
+		if delErr := DB.Delete(&binding).Error; delErr != nil {
+			return false, delErr
+		}
+		return true, nil
+	}
+
+	return false, nil
+}

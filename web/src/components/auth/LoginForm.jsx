@@ -426,7 +426,6 @@ const LoginForm = () => {
       onOIDCClicked(
         status.oidc_authorization_endpoint,
         status.oidc_client_id,
-        false,
         { shouldLogout: true },
       );
     } finally {

@@ -296,13 +296,40 @@ export async function onLinuxDOOAuthClicked(
 export async function onCustomOAuthClicked(provider, options = {}) {
   const state = await prepareOAuthState(options);
   if (!state) return;
-  
+
   try {
+    const providerSlug = (provider.slug || '').toLowerCase();
+
+    // For Google OAuth on mobile, users may hit blank pages when
+    // accounts.google.com is unreachable due to local proxy/VPN/network issues.
+    // We do a lightweight reachability probe first to provide actionable feedback.
+    if (providerSlug === 'google') {
+      try {
+        const timeoutMs = 3500;
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('timeout')), timeoutMs);
+        });
+        await Promise.race([
+          fetch('https://accounts.google.com/generate_204', {
+            method: 'GET',
+            mode: 'no-cors',
+            cache: 'no-store',
+          }),
+          timeoutPromise,
+        ]);
+      } catch (_) {
+        showError(
+          '检测到 Google 服务当前不可达，请检查代理/VPN/网络后重试（可先在浏览器直接访问 accounts.google.com 验证）',
+        );
+        return;
+      }
+    }
+
     const redirect_uri = `${window.location.origin}/oauth/${provider.slug}`;
-    
+
     // Check if authorization_endpoint is a full URL or relative path
     let authUrl;
-    if (provider.authorization_endpoint.startsWith('http://') || 
+    if (provider.authorization_endpoint.startsWith('http://') ||
         provider.authorization_endpoint.startsWith('https://')) {
       authUrl = new URL(provider.authorization_endpoint);
     } else {
@@ -322,6 +349,11 @@ export async function onCustomOAuthClicked(provider, options = {}) {
     // Use same-tab redirect to keep OAuth navigation reliable across devices.
     window.location.href = authUrl.toString();
   } catch (error) {
+    // Other possible causes:
+    // - provider-side outages or rate limits
+    // - invalid OAuth config (client_id/redirect_uri/scopes)
+    // - browser security policy or extension interference
+    // - transient network errors outside Google reachability checks
     console.error('Failed to initiate custom OAuth:', error);
     showError('OAuth 登录失败：' + (error.message || '未知错误'));
   }

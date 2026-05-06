@@ -360,7 +360,9 @@ code {
   line-height: 1;
   background-color: var(--semi-color-fill-0);
   color: var(--semi-color-text-2);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .sbg-badge-active {
@@ -908,6 +910,34 @@ html.dark .with-pastel-balls::before {
   position: sticky;
   top: 0;
   z-index: 5;
+}
+
+.api-transfer-pricing-copy-button.semi-button {
+  border-color: transparent !important;
+  border-radius: 999px !important;
+  color: #001037 !important;
+  background: #d7ff00 !important;
+  font-weight: 560;
+  box-shadow: 0 10px 22px -16px rgba(0, 16, 55, 0.42);
+}
+
+.api-transfer-pricing-copy-button.semi-button:hover,
+.api-transfer-pricing-copy-button.semi-button:focus-visible {
+  border-color: transparent !important;
+  color: #001037 !important;
+  background: #c9f000 !important;
+}
+
+.api-transfer-pricing-copy-button.semi-button .semi-button-content,
+.api-transfer-pricing-copy-button.semi-button .semi-icon {
+  color: inherit !important;
+}
+
+.api-transfer-pricing-copy-button.semi-button.semi-button-disabled {
+  color: #001037 !important;
+  background: #d7ff00 !important;
+  box-shadow: none;
+  opacity: 0.72;
 }
 
 .pricing-view-container {

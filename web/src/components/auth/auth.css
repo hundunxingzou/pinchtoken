@@ -81,6 +81,10 @@ For commercial licensing, please contact support@quantumnous.com
   margin-right: 20px;
 }
 
+.api-transfer-auth-form .api-transfer-auth-password-field .semi-input-modebtn {
+  margin-right: 20px;
+}
+
 .api-transfer-auth-form .semi-input {
   min-height: var(--api-transfer-auth-control-height);
   color: #001037;

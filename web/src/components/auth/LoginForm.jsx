@@ -945,6 +945,7 @@ const LoginForm = () => {
 
                 <Form.Input
                   field='password'
+                  fieldClassName='api-transfer-auth-password-field'
                   label={t('密码')}
                   placeholder={t('请输入您的密码')}
                   name='password'

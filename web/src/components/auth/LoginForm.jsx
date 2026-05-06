@@ -66,6 +66,7 @@ import LinuxDoIcon from '../common/logo/LinuxDoIcon';
 import TwoFAVerification from './TwoFAVerification';
 import { useTranslation } from 'react-i18next';
 import { SiDiscord } from 'react-icons/si';
+import './auth.css';
 
 const LoginForm = () => {
   let navigate = useNavigate();
@@ -158,7 +159,8 @@ const LoginForm = () => {
     if (status.discord_oauth) options.push({ key: 'discord', type: 'discord' });
     if (status.oidc_enabled) options.push({ key: 'oidc', type: 'oidc' });
     if (status.linuxdo_oauth) options.push({ key: 'linuxdo', type: 'linuxdo' });
-    if (status.telegram_oauth) options.push({ key: 'telegram', type: 'telegram' });
+    if (status.telegram_oauth)
+      options.push({ key: 'telegram', type: 'telegram' });
     if (googleCustomOAuthProvider) {
       options.push({
         key: `custom:${googleCustomOAuthProvider.slug}`,
@@ -423,11 +425,9 @@ const LoginForm = () => {
     }
     setOidcLoading(true);
     try {
-      onOIDCClicked(
-        status.oidc_authorization_endpoint,
-        status.oidc_client_id,
-        { shouldLogout: true },
-      );
+      onOIDCClicked(status.oidc_authorization_endpoint, status.oidc_client_id, {
+        shouldLogout: true,
+      });
     } finally {
       // 由于重定向，这里不会执行到，但为了完整性添加
       setTimeout(() => setOidcLoading(false), 3000);
@@ -994,7 +994,7 @@ const LoginForm = () => {
                 <div className='space-y-2 pt-2'>
                   <Button
                     theme='solid'
-                    className='w-full !rounded-full'
+                    className='api-transfer-auth-cta w-full'
                     type='primary'
                     htmlType='submit'
                     onClick={handleSubmit}
@@ -1164,8 +1164,7 @@ const LoginForm = () => {
         style={{ top: '50%', left: '-120px' }}
       />
       <div className='w-full max-w-sm mt-[60px]'>
-        {showEmailLogin ||
-        !hasOAuthLoginOptions
+        {showEmailLogin || !hasOAuthLoginOptions
           ? renderEmailLoginForm()
           : renderOAuthOptions()}
         {renderWeChatLoginModal()}

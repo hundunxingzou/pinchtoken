@@ -1,0 +1,75 @@
+/*
+Copyright (C) 2025 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
+
+.api-transfer-auth-cta.semi-button {
+  position: relative;
+  height: clamp(2.9rem, 6.3vh, 3.45rem);
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #001037 !important;
+  background: #d7ff00 !important;
+  font-size: 1rem;
+  font-weight: 560;
+  line-height: 1;
+  transform: translateZ(0);
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.api-transfer-auth-cta.semi-button::after {
+  position: absolute;
+  inset: -1px auto -1px -55%;
+  width: 42%;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.46),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: transform 560ms ease;
+}
+
+.api-transfer-auth-cta.semi-button:hover,
+.api-transfer-auth-cta.semi-button:focus-visible {
+  color: #001037 !important;
+  background: #c9f000 !important;
+  transform: translateY(-2px);
+}
+
+.api-transfer-auth-cta.semi-button:hover::after,
+.api-transfer-auth-cta.semi-button:focus-visible::after {
+  transform: translateX(360%) skewX(-18deg);
+}
+
+.api-transfer-auth-cta.semi-button .semi-button-content {
+  position: relative;
+  z-index: 1;
+  font-weight: 560;
+}
+
+.api-transfer-auth-cta.semi-button.semi-button-disabled,
+.api-transfer-auth-cta.semi-button.semi-button-loading {
+  opacity: 0.68;
+  transform: none;
+}

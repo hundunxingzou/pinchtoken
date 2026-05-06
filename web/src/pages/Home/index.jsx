@@ -35,6 +35,8 @@ import { StatusContext } from '../../context/Status';
 import { useIsMobile } from '../../hooks/common/useIsMobile';
 import './api-transfer-home.css';
 
+const SHOW_PRICING_SECTION = false;
+
 const landingCopy = {
   zh: {
     navHome: '首页',
@@ -768,7 +770,7 @@ export default function Home() {
         <Platform t={t} />
         <Models t={t} />
         <Tools t={t} />
-        <Pricing t={t} />
+        {SHOW_PRICING_SECTION && <Pricing t={t} />}
         <Docs t={t} />
         <Faq t={t} />
         <FinalCta t={t} />

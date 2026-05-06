@@ -86,64 +86,38 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
       return undefined;
     }
 
-    let scrollTarget = window;
     let animationFrameId = 0;
-    let syncTimerId = 0;
 
-    const getScrollTarget = (hero) => {
-      let node = hero?.parentElement;
-      while (node && node !== document.body) {
-        const overflowY = window.getComputedStyle(node).overflowY;
-        if (
-          /(auto|scroll|overlay)/.test(overflowY) &&
-          node.scrollHeight > node.clientHeight
-        ) {
-          return node;
+    const syncHeroSurface = () => {
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+      animationFrameId = window.requestAnimationFrame(() => {
+        const hero = document.querySelector('.api-transfer-home .hero-shell');
+        if (!hero) {
+          setOnHeroSurface(true);
+          return;
         }
-        node = node.parentElement;
-      }
-      return window;
-    };
 
-    const getScrollTop = (target) =>
-      target === window ? window.scrollY : target.scrollTop;
-
-    const updateScrollTarget = (nextTarget) => {
-      if (nextTarget === scrollTarget) {
-        return;
-      }
-      scrollTarget.removeEventListener('scroll', syncHeroSurface);
-      scrollTarget = nextTarget;
-      scrollTarget.addEventListener('scroll', syncHeroSurface, {
-        passive: true,
+        const heroRect = hero.getBoundingClientRect();
+        setOnHeroSurface(heroRect.top >= -2 && heroRect.bottom > 72);
       });
     };
 
-    const syncHeroSurface = () => {
-      const hero = document.querySelector('.api-transfer-home .hero-shell');
-      if (!hero) {
-        setOnHeroSurface(true);
-        return;
-      }
-      const nextScrollTarget = getScrollTarget(hero);
-      updateScrollTarget(nextScrollTarget);
-
-      const heroRect = hero.getBoundingClientRect();
-      const scrollTop = getScrollTop(nextScrollTarget);
-      setOnHeroSurface(
-        scrollTop <= 2 || (heroRect.top < 80 && heroRect.bottom > 72),
-      );
-    };
-
     setOnHeroSurface(true);
-    animationFrameId = window.requestAnimationFrame(syncHeroSurface);
-    syncTimerId = window.setTimeout(syncHeroSurface, 120);
-    scrollTarget.addEventListener('scroll', syncHeroSurface, { passive: true });
+    syncHeroSurface();
+    document.addEventListener('scroll', syncHeroSurface, {
+      capture: true,
+      passive: true,
+    });
+    window.addEventListener('scroll', syncHeroSurface, { passive: true });
     window.addEventListener('resize', syncHeroSurface);
     return () => {
       window.cancelAnimationFrame(animationFrameId);
-      window.clearTimeout(syncTimerId);
-      scrollTarget.removeEventListener('scroll', syncHeroSurface);
+      document.removeEventListener('scroll', syncHeroSurface, {
+        capture: true,
+      });
+      window.removeEventListener('scroll', syncHeroSurface);
       window.removeEventListener('resize', syncHeroSurface);
     };
   }, [isHomeRoute]);

@@ -914,7 +914,6 @@ html.dark .with-pastel-balls::before {
 
 .api-transfer-pricing-copy-button.semi-button {
   border-color: transparent !important;
-  border-radius: 999px !important;
   color: #001037 !important;
   background: #d7ff00 !important;
   font-weight: 560;

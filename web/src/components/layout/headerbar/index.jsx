@@ -86,21 +86,64 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
       return undefined;
     }
 
+    let scrollTarget = window;
+    let animationFrameId = 0;
+    let syncTimerId = 0;
+
+    const getScrollTarget = (hero) => {
+      let node = hero?.parentElement;
+      while (node && node !== document.body) {
+        const overflowY = window.getComputedStyle(node).overflowY;
+        if (
+          /(auto|scroll|overlay)/.test(overflowY) &&
+          node.scrollHeight > node.clientHeight
+        ) {
+          return node;
+        }
+        node = node.parentElement;
+      }
+      return window;
+    };
+
+    const getScrollTop = (target) =>
+      target === window ? window.scrollY : target.scrollTop;
+
+    const updateScrollTarget = (nextTarget) => {
+      if (nextTarget === scrollTarget) {
+        return;
+      }
+      scrollTarget.removeEventListener('scroll', syncHeroSurface);
+      scrollTarget = nextTarget;
+      scrollTarget.addEventListener('scroll', syncHeroSurface, {
+        passive: true,
+      });
+    };
+
     const syncHeroSurface = () => {
       const hero = document.querySelector('.api-transfer-home .hero-shell');
       if (!hero) {
-        setOnHeroSurface(false);
+        setOnHeroSurface(true);
         return;
       }
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      setOnHeroSurface(heroBottom > 72);
+      const nextScrollTarget = getScrollTarget(hero);
+      updateScrollTarget(nextScrollTarget);
+
+      const heroRect = hero.getBoundingClientRect();
+      const scrollTop = getScrollTop(nextScrollTarget);
+      setOnHeroSurface(
+        scrollTop <= 2 || (heroRect.top < 80 && heroRect.bottom > 72),
+      );
     };
 
-    syncHeroSurface();
-    window.addEventListener('scroll', syncHeroSurface, { passive: true });
+    setOnHeroSurface(true);
+    animationFrameId = window.requestAnimationFrame(syncHeroSurface);
+    syncTimerId = window.setTimeout(syncHeroSurface, 120);
+    scrollTarget.addEventListener('scroll', syncHeroSurface, { passive: true });
     window.addEventListener('resize', syncHeroSurface);
     return () => {
-      window.removeEventListener('scroll', syncHeroSurface);
+      window.cancelAnimationFrame(animationFrameId);
+      window.clearTimeout(syncTimerId);
+      scrollTarget.removeEventListener('scroll', syncHeroSurface);
       window.removeEventListener('resize', syncHeroSurface);
     };
   }, [isHomeRoute]);

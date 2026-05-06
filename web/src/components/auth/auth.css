@@ -17,9 +17,45 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+.api-transfer-auth-form {
+  --api-transfer-auth-control-height: clamp(2.9rem, 6.3vh, 3.45rem);
+}
+
+.api-transfer-auth-form .semi-input-wrapper {
+  min-height: var(--api-transfer-auth-control-height);
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #f2f2f2;
+}
+
+.api-transfer-auth-form .semi-input-wrapper:hover,
+.api-transfer-auth-form .semi-input-wrapper-focus {
+  background: #eeeeee;
+}
+
+.api-transfer-auth-form .semi-input-prefix,
+.api-transfer-auth-form .semi-input-suffix {
+  display: inline-flex;
+  height: var(--api-transfer-auth-control-height);
+  align-items: center;
+}
+
+.api-transfer-auth-form .semi-input {
+  min-height: var(--api-transfer-auth-control-height);
+  color: #001037;
+  font-size: 1rem;
+}
+
+.api-transfer-auth-form .semi-input::placeholder {
+  color: rgba(0, 16, 55, 0.42);
+}
+
 .api-transfer-auth-cta.semi-button {
   position: relative;
-  height: clamp(2.9rem, 6.3vh, 3.45rem);
+  height: var(
+    --api-transfer-auth-control-height,
+    clamp(2.9rem, 6.3vh, 3.45rem)
+  );
   overflow: hidden;
   border: 0 !important;
   border-radius: 999px !important;

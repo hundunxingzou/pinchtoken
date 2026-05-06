@@ -933,7 +933,7 @@ const LoginForm = () => {
                   <span className='ml-3'>{t('使用 Passkey 登录')}</span>
                 </Button>
               )}
-              <Form className='space-y-3'>
+              <Form className='api-transfer-auth-form space-y-3'>
                 <Form.Input
                   field='username'
                   label={t('用户名或邮箱')}

@@ -103,7 +103,7 @@ For commercial licensing, please contact support@quantumnous.com
   color: #001037 !important;
   background: #d7ff00 !important;
   font-size: 1rem;
-  font-weight: 560;
+  font-weight: 500;
   line-height: 1;
   transform: translateZ(0);
   transition:
@@ -142,7 +142,7 @@ For commercial licensing, please contact support@quantumnous.com
 .api-transfer-auth-cta.semi-button .semi-button-content {
   position: relative;
   z-index: 1;
-  font-weight: 560;
+  font-weight: 500;
 }
 
 .api-transfer-auth-cta.semi-button.semi-button-disabled,

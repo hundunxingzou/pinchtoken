@@ -916,7 +916,7 @@ html.dark .with-pastel-balls::before {
   border-color: transparent !important;
   color: #001037 !important;
   background: #d7ff00 !important;
-  font-weight: 560;
+  font-weight: 500;
   box-shadow: 0 10px 22px -16px rgba(0, 16, 55, 0.42);
 }
 
@@ -930,6 +930,10 @@ html.dark .with-pastel-balls::before {
 .api-transfer-pricing-copy-button.semi-button .semi-button-content,
 .api-transfer-pricing-copy-button.semi-button .semi-icon {
   color: inherit !important;
+}
+
+.api-transfer-pricing-copy-button.semi-button .semi-button-content {
+  font-weight: 500 !important;
 }
 
 .api-transfer-pricing-copy-button.semi-button.semi-button-disabled {

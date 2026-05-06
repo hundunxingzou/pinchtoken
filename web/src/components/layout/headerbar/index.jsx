@@ -51,6 +51,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   } = useNotifications(statusState);
 
   const isHomeRoute = location.pathname === '/';
+  const useLightTopbar = !isHomeRoute;
   const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
   const [onHeroSurface, setOnHeroSurface] = useState(isHomeRoute);
   const activeLang = currentLang?.startsWith('zh') ? 'zh' : 'en';
@@ -121,10 +122,16 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     await logout();
   };
 
+  const topbarClassName = [
+    'api-transfer-topbar',
+    onHeroSurface ? 'api-transfer-topbar-hero' : '',
+    useLightTopbar ? 'api-transfer-topbar-light' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <header
-      className={`api-transfer-topbar ${onHeroSurface ? 'api-transfer-topbar-hero' : ''}`}
-    >
+    <header className={topbarClassName}>
       <NoticeModal
         visible={noticeVisible}
         onClose={handleNoticeClose}

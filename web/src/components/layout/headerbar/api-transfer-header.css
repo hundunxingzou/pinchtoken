@@ -38,6 +38,12 @@ For commercial licensing, please contact support@quantumnous.com
   box-shadow: none;
 }
 
+.api-transfer-topbar-light {
+  color: #001037;
+  background-color: transparent;
+  box-shadow: none;
+}
+
 .api-transfer-topbar-inner {
   display: flex;
   align-items: center;
@@ -348,6 +354,100 @@ For commercial licensing, please contact support@quantumnous.com
   border: 0;
   color: #001037;
   background: #d7ff00;
+}
+
+.api-transfer-topbar-light .api-transfer-brand,
+.api-transfer-topbar-light .api-transfer-brand:hover {
+  color: #001037;
+}
+
+.api-transfer-topbar-light .api-transfer-brand-mark {
+  border: 1px solid rgba(0, 16, 55, 0.12);
+  color: #001037;
+  background: #ffffff;
+  box-shadow: 0 10px 28px -22px rgba(0, 16, 55, 0.55);
+}
+
+.api-transfer-topbar-light .api-transfer-nav,
+.api-transfer-topbar-light .api-transfer-nav a {
+  color: rgba(0, 16, 55, 0.72);
+}
+
+.api-transfer-topbar-light .api-transfer-nav a:hover {
+  color: #001037;
+}
+
+.api-transfer-topbar-light .api-transfer-nav a::after {
+  background: #0050f8;
+}
+
+.api-transfer-topbar-light .api-transfer-icon-button,
+.api-transfer-topbar-light .api-transfer-mobile-menu {
+  border-color: rgba(0, 16, 55, 0.14);
+  color: #001037;
+  background: rgba(0, 16, 55, 0.04);
+}
+
+.api-transfer-topbar-light .api-transfer-icon-button:hover,
+.api-transfer-topbar-light .api-transfer-mobile-menu:hover {
+  border-color: rgba(0, 16, 55, 0.24);
+  background: rgba(0, 16, 55, 0.08);
+}
+
+.api-transfer-topbar-light .api-transfer-lang-switch {
+  border-color: rgba(0, 16, 55, 0.16);
+  color: #001037;
+  background: rgba(0, 16, 55, 0.04);
+}
+
+.api-transfer-topbar-light .api-transfer-lang-switch::before {
+  background: #001037;
+}
+
+.api-transfer-topbar-light
+  .api-transfer-lang-switch[data-lang='zh']
+  span:first-child,
+.api-transfer-topbar-light
+  .api-transfer-lang-switch[data-lang='en']
+  span:last-child {
+  color: #ffffff;
+}
+
+.api-transfer-topbar-light .api-transfer-topbar-button-ghost,
+.api-transfer-topbar-light .api-transfer-user-button {
+  border-color: rgba(0, 16, 55, 0.18);
+  color: #001037;
+  background: rgba(0, 16, 55, 0.04);
+}
+
+.api-transfer-topbar-light .api-transfer-topbar-button-ghost:hover,
+.api-transfer-topbar-light .api-transfer-user-button:hover {
+  color: #001037;
+  background: rgba(0, 16, 55, 0.08);
+}
+
+.api-transfer-topbar-light .api-transfer-user-button span {
+  color: #ffffff;
+  background: #001037;
+}
+
+.api-transfer-topbar-light .api-transfer-mobile-panel {
+  border-color: rgba(0, 16, 55, 0.1);
+  color: #001037;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 60px -36px rgba(0, 16, 55, 0.34);
+}
+
+.api-transfer-topbar-light
+  .api-transfer-mobile-panel
+  a:not(.api-transfer-mobile-action) {
+  color: #001037;
+}
+
+.api-transfer-topbar-light
+  .api-transfer-mobile-panel
+  a:not(.api-transfer-mobile-action):hover {
+  background: rgba(0, 16, 55, 0.06);
 }
 
 @media (min-width: 1024px) {

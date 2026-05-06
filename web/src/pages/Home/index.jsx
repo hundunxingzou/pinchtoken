@@ -26,7 +26,6 @@ import {
   ChevronDown,
   Copy,
   KeyRound,
-  Menu,
   Route,
   WalletCards,
 } from 'lucide-react';
@@ -291,92 +290,6 @@ const endpointPaths = [
   '/v1/images/generations',
   '/v1/embeddings',
 ];
-
-function Header({ lang, setLang, t }) {
-  const [elevated, setElevated] = useState(false);
-  const [open, setOpen] = useState(false);
-  const nav = [
-    ['/', t.navHome],
-    ['/console', t.navConsole],
-    ['#models', t.navMarketplace],
-  ];
-
-  useEffect(() => {
-    const onScroll = () => setElevated(window.scrollY > 12);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const toggleLang = () => setLang(lang === 'zh' ? 'en' : 'zh');
-
-  return (
-    <>
-      <header className='site-header' data-elevated={elevated}>
-        <a className='brand' href='/' aria-label='CCSub home'>
-          <span className='brand-mark' aria-hidden='true'>
-            C
-          </span>
-          <span>CCSub</span>
-        </a>
-
-        <nav className='main-nav' aria-label='Primary navigation'>
-          {nav.map(([href, label]) => (
-            <a href={href} key={href}>
-              {label}
-            </a>
-          ))}
-        </nav>
-
-        <div className='header-actions'>
-          <button
-            className='lang-switch'
-            data-lang={lang}
-            type='button'
-            onClick={toggleLang}
-            aria-label='Switch language'
-          >
-            <span>中</span>
-            <span>EN</span>
-          </button>
-          <a className='button button-primary button-small' href='/login'>
-            <span>{t.navCta}</span>
-            <ArrowRight size={17} aria-hidden='true' />
-          </a>
-        </div>
-
-        <button
-          className='menu-button'
-          type='button'
-          aria-label='Open navigation'
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          <Menu size={22} aria-hidden='true' />
-        </button>
-      </header>
-
-      <div className='mobile-panel' data-open={open}>
-        {[...nav, ['/login', t.navCta]].map(([href, label]) => (
-          <a href={href} key={href} onClick={() => setOpen(false)}>
-            {label}
-            <ArrowRight size={18} aria-hidden='true' />
-          </a>
-        ))}
-        <button
-          className='lang-switch mt-4'
-          data-lang={lang}
-          type='button'
-          onClick={toggleLang}
-          aria-label='Switch language'
-        >
-          <span>中</span>
-          <span>EN</span>
-        </button>
-      </div>
-    </>
-  );
-}
 
 function normalizeBaseUrl(baseUrl) {
   return (baseUrl || window.location.origin).replace(/\/+$/, '');
@@ -794,28 +707,13 @@ export default function Home() {
   const [statusState] = useContext(StatusContext);
   const isMobile = useIsMobile();
   const activeAppLang = i18n.language?.startsWith('zh') ? 'zh' : 'en';
-  const [lang, setLangState] = useState(
-    () => localStorage.getItem('ccsub-language') || activeAppLang,
-  );
   const [noticeVisible, setNoticeVisible] = useState(false);
-  const t = useMemo(() => landingCopy[lang] || landingCopy.zh, [lang]);
+  const t = useMemo(
+    () => landingCopy[activeAppLang] || landingCopy.zh,
+    [activeAppLang],
+  );
   const serverAddress =
     statusState?.status?.server_address || window.location.origin;
-
-  const setLang = (nextLang) => {
-    setLangState(nextLang);
-    localStorage.setItem('ccsub-language', nextLang);
-    i18n.changeLanguage(nextLang === 'zh' ? 'zh-CN' : 'en');
-  };
-
-  useEffect(() => {
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    localStorage.setItem('ccsub-language', lang);
-  }, [lang]);
-
-  useEffect(() => {
-    setLangState(activeAppLang);
-  }, [activeAppLang]);
 
   useEffect(() => {
     const checkNoticeAndShow = async () => {
@@ -865,7 +763,6 @@ export default function Home() {
         onClose={() => setNoticeVisible(false)}
         isMobile={isMobile}
       />
-      <Header lang={lang} setLang={setLang} t={t} />
       <main>
         <Hero baseUrl={serverAddress} t={t} />
         <Platform t={t} />

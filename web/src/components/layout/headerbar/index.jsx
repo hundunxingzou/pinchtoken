@@ -17,38 +17,26 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Bell, Menu, X } from 'lucide-react';
 import { useHeaderBar } from '../../../hooks/common/useHeaderBar';
 import { useNotifications } from '../../../hooks/common/useNotifications';
-import { useNavigation } from '../../../hooks/common/useNavigation';
 import NoticeModal from '../NoticeModal';
-import MobileMenuButton from './MobileMenuButton';
-import HeaderLogo from './HeaderLogo';
-import Navigation from './Navigation';
-import ActionButtons from './ActionButtons';
+import './api-transfer-header.css';
 
 const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const {
     userState,
     statusState,
     isMobile,
-    collapsed,
-    logoLoaded,
     currentLang,
-    isLoading,
     systemName,
-    logo,
-    isNewYear,
-    isSelfUseMode,
-    docsLink,
-    isDemoSiteMode,
     isConsoleRoute,
-    theme,
-    headerNavModules,
+    location,
     pricingRequireAuth,
     logout,
     handleLanguageChange,
-    handleThemeToggle,
     handleMobileMenuToggle,
     navigate,
     t,
@@ -62,10 +50,52 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     getUnreadKeys,
   } = useNotifications(statusState);
 
-  const { mainNavLinks } = useNavigation(t, docsLink, headerNavModules);
+  const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
+  const activeLang = currentLang?.startsWith('zh') ? 'zh' : 'en';
+  const brandName = systemName || 'CCSub';
+  const brandInitial = (brandName || 'C').trim().slice(0, 1).toUpperCase();
+
+  const navLinks = useMemo(() => {
+    const requireLogin = !userState.user;
+    return [
+      {
+        text: t('首页'),
+        to: '/',
+      },
+      {
+        text: t('控制台'),
+        to: requireLogin ? '/login' : '/console',
+      },
+      {
+        text: t('模型广场'),
+        to: pricingRequireAuth && requireLogin ? '/login' : '/pricing',
+      },
+    ];
+  }, [pricingRequireAuth, t, userState.user]);
+
+  useEffect(() => {
+    setMobilePanelOpen(false);
+  }, [location.pathname]);
+
+  const toggleLanguage = () => {
+    handleLanguageChange(activeLang === 'zh' ? 'en' : 'zh-CN');
+  };
+
+  const handleMenuClick = () => {
+    if (isConsoleRoute && isMobile) {
+      handleMobileMenuToggle();
+      return;
+    }
+    setMobilePanelOpen((open) => !open);
+  };
+
+  const handleLogout = async () => {
+    setMobilePanelOpen(false);
+    await logout();
+  };
 
   return (
-    <header className='text-semi-color-text-0 sticky top-0 z-50 transition-colors duration-300 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-lg'>
+    <header className='api-transfer-topbar'>
       <NoticeModal
         visible={noticeVisible}
         onClose={handleNoticeClose}
@@ -74,56 +104,142 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
         unreadKeys={getUnreadKeys()}
       />
 
-      <div className='w-full px-2'>
-        <div className='flex items-center justify-between h-16'>
-          <div className='flex items-center'>
-            <MobileMenuButton
-              isConsoleRoute={isConsoleRoute}
-              isMobile={isMobile}
-              drawerOpen={drawerOpen}
-              collapsed={collapsed}
-              onToggle={handleMobileMenuToggle}
-              t={t}
-            />
+      <div className='api-transfer-topbar-inner'>
+        <Link className='api-transfer-brand' to='/' aria-label={t('首页')}>
+          <span className='api-transfer-brand-mark' aria-hidden='true'>
+            {brandInitial}
+          </span>
+          <span>{brandName}</span>
+        </Link>
 
-            <HeaderLogo
-              isMobile={isMobile}
-              isConsoleRoute={isConsoleRoute}
-              logo={logo}
-              logoLoaded={logoLoaded}
-              isLoading={isLoading}
-              systemName={systemName}
-              isSelfUseMode={isSelfUseMode}
-              isDemoSiteMode={isDemoSiteMode}
-              t={t}
-            />
-          </div>
+        <nav className='api-transfer-nav' aria-label={t('顶部导航')}>
+          {navLinks.map((link) => (
+            <Link key={link.text} to={link.to}>
+              {link.text}
+            </Link>
+          ))}
+        </nav>
 
-          <Navigation
-            mainNavLinks={mainNavLinks}
-            isMobile={isMobile}
-            isLoading={isLoading}
-            userState={userState}
-            pricingRequireAuth={pricingRequireAuth}
-          />
+        <div className='api-transfer-actions'>
+          <button
+            className='api-transfer-icon-button'
+            type='button'
+            onClick={handleNoticeOpen}
+            aria-label={t('系统公告')}
+          >
+            <Bell size={18} aria-hidden='true' />
+            {unreadCount > 0 && (
+              <span className='api-transfer-notice-dot'>
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </button>
 
-          <ActionButtons
-            isNewYear={isNewYear}
-            unreadCount={unreadCount}
-            onNoticeOpen={handleNoticeOpen}
-            theme={theme}
-            onThemeToggle={handleThemeToggle}
-            currentLang={currentLang}
-            onLanguageChange={handleLanguageChange}
-            userState={userState}
-            isLoading={isLoading}
-            isMobile={isMobile}
-            isSelfUseMode={isSelfUseMode}
-            logout={logout}
-            navigate={navigate}
-            t={t}
-          />
+          <button
+            className='api-transfer-lang-switch'
+            data-lang={activeLang}
+            type='button'
+            onClick={toggleLanguage}
+            aria-label={t('common.changeLanguage')}
+          >
+            <span>中</span>
+            <span>EN</span>
+          </button>
+
+          {userState.user ? (
+            <>
+              <button
+                className='api-transfer-user-button'
+                type='button'
+                onClick={() => navigate('/console/personal')}
+              >
+                <span>
+                  {userState.user.username?.slice(0, 1).toUpperCase()}
+                </span>
+                <strong>{userState.user.username}</strong>
+              </button>
+              <button
+                className='api-transfer-topbar-button api-transfer-topbar-button-ghost'
+                type='button'
+                onClick={handleLogout}
+              >
+                {t('退出')}
+              </button>
+            </>
+          ) : (
+            <Link
+              className='api-transfer-topbar-button api-transfer-topbar-button-primary'
+              to='/login'
+            >
+              <span>{t('登录')}</span>
+              <ArrowRight size={17} aria-hidden='true' />
+            </Link>
+          )}
         </div>
+
+        <button
+          className='api-transfer-mobile-menu'
+          type='button'
+          aria-label={
+            isConsoleRoute && isMobile
+              ? drawerOpen
+                ? t('关闭侧边栏')
+                : t('打开侧边栏')
+              : mobilePanelOpen
+                ? t('关闭导航')
+                : t('打开导航')
+          }
+          aria-expanded={
+            isConsoleRoute && isMobile ? drawerOpen : mobilePanelOpen
+          }
+          onClick={handleMenuClick}
+        >
+          {(isConsoleRoute && isMobile ? drawerOpen : mobilePanelOpen) ? (
+            <X size={22} aria-hidden='true' />
+          ) : (
+            <Menu size={22} aria-hidden='true' />
+          )}
+        </button>
+      </div>
+
+      <div className='api-transfer-mobile-panel' data-open={mobilePanelOpen}>
+        {navLinks.map((link) => (
+          <Link
+            key={link.text}
+            to={link.to}
+            onClick={() => setMobilePanelOpen(false)}
+          >
+            {link.text}
+            <ArrowRight size={18} aria-hidden='true' />
+          </Link>
+        ))}
+        <button
+          className='api-transfer-lang-switch'
+          data-lang={activeLang}
+          type='button'
+          onClick={toggleLanguage}
+          aria-label={t('common.changeLanguage')}
+        >
+          <span>中</span>
+          <span>EN</span>
+        </button>
+        {userState.user ? (
+          <button
+            className='api-transfer-mobile-action'
+            type='button'
+            onClick={handleLogout}
+          >
+            {t('退出')}
+          </button>
+        ) : (
+          <Link
+            className='api-transfer-mobile-action'
+            to='/login'
+            onClick={() => setMobilePanelOpen(false)}
+          >
+            {t('登录')}
+          </Link>
+        )}
       </div>
     </header>
   );

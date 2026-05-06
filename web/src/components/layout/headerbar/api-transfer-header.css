@@ -18,8 +18,12 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 .api-transfer-topbar {
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 100;
+  width: 100%;
   min-height: 64px;
   color: #ffffff;
   background-color: #001033;

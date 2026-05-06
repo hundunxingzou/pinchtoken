@@ -185,6 +185,10 @@
   height: clamp(2.4rem, 6vh, 3.25rem);
 }
 
+.api-transfer-home .copy-endpoint-icon {
+  transform: translateX(2px);
+}
+
 .api-transfer-home .hero-actions {
   @apply flex flex-wrap justify-center gap-3;
 }

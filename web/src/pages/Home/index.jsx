@@ -344,11 +344,7 @@ function Hero({ baseUrl, t }) {
               {copied ? (
                 <Check size={22} aria-hidden='true' />
               ) : (
-                <Copy
-                  className='copy-endpoint-icon'
-                  size={22}
-                  aria-hidden='true'
-                />
+                <Copy size={22} aria-hidden='true' />
               )}
             </button>
           </div>

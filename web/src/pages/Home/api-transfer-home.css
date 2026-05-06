@@ -183,10 +183,8 @@
   @apply ml-2 mr-1 grid place-items-center rounded-full bg-[#e2e8f0] text-[#6b7280] transition-colors hover:bg-[#d6dee9] hover:text-ink;
   width: clamp(2.4rem, 6vh, 3.25rem);
   height: clamp(2.4rem, 6vh, 3.25rem);
-}
-
-.api-transfer-home .copy-endpoint-icon {
-  transform: translateX(2px);
+  margin-right: calc(0.25rem - 4px);
+  margin-left: calc(0.5rem + 4px);
 }
 
 .api-transfer-home .hero-actions {

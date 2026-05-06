@@ -731,13 +731,12 @@
 }
 
 .api-transfer-home .section-copy h2.platform-heading {
-  display: grid;
-  gap: clamp(12px, 1.5vw, 22px);
+  display: block;
   white-space: normal;
   text-wrap: balance;
   overflow-wrap: normal;
-  font-size: clamp(40px, 4.8vw, 64px);
-  line-height: 1.04;
+  font-size: clamp(42px, 3.45vw, 58px);
+  line-height: 1.08;
 }
 
 .api-transfer-home .platform-heading span {

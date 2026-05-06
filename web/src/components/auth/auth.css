@@ -73,6 +73,14 @@ For commercial licensing, please contact support@quantumnous.com
   align-items: center;
 }
 
+.api-transfer-auth-form .semi-input-prefix {
+  margin-left: 8px;
+}
+
+.api-transfer-auth-form .semi-input-suffix {
+  margin-right: 8px;
+}
+
 .api-transfer-auth-form .semi-input {
   min-height: var(--api-transfer-auth-control-height);
   color: #001037;

@@ -23,7 +23,6 @@ import { UserContext } from '../../context/User';
 import { StatusContext } from '../../context/Status';
 import {
   API,
-  getLogo,
   showError,
   showInfo,
   showSuccess,
@@ -115,8 +114,8 @@ const LoginForm = () => {
   const githubButtonText = t(githubButtonTextKeyByState[githubButtonState]);
   const [customOAuthLoading, setCustomOAuthLoading] = useState({});
 
-  const logo = getLogo();
   const systemName = getSystemName();
+  const brandInitial = (systemName || 'C').trim().slice(0, 1).toUpperCase();
 
   let affCode = new URLSearchParams(window.location.search).get('aff');
   if (affCode) {
@@ -689,16 +688,20 @@ const LoginForm = () => {
     return null;
   };
 
+  const renderAuthBrand = () => (
+    <div className='api-transfer-auth-brand' aria-label={systemName}>
+      <span className='api-transfer-auth-brand-mark' aria-hidden='true'>
+        {brandInitial}
+      </span>
+      <span className='api-transfer-auth-brand-name'>{systemName}</span>
+    </div>
+  );
+
   const renderOAuthOptions = () => {
     return (
       <div className='flex flex-col items-center'>
         <div className='w-full max-w-md'>
-          <div className='flex items-center justify-center mb-6 gap-2'>
-            <img src={logo} alt='Logo' className='h-10 rounded-full' />
-            <Title heading={3} className='!text-gray-800'>
-              {systemName}
-            </Title>
-          </div>
+          {renderAuthBrand()}
 
           <Card className='border-0 !rounded-2xl overflow-hidden'>
             <div className='flex justify-center pt-6 pb-2'>
@@ -909,10 +912,7 @@ const LoginForm = () => {
     return (
       <div className='flex flex-col items-center'>
         <div className='w-full max-w-md'>
-          <div className='flex items-center justify-center mb-6 gap-2'>
-            <img src={logo} alt='Logo' className='h-10 rounded-full' />
-            <Title heading={3}>{systemName}</Title>
-          </div>
+          {renderAuthBrand()}
 
           <Card className='border-0 !rounded-2xl overflow-hidden'>
             <div className='flex justify-center pt-6 pb-2'>

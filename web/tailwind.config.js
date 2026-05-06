@@ -17,10 +17,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+import colors from 'tailwindcss/colors.js';
+
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     colors: {
+      ...colors,
       'semi-color-white': 'var(--semi-color-white)',
       'semi-color-black': 'var(--semi-color-black)',
       'semi-color-primary': 'var(--semi-color-primary)',
@@ -132,8 +135,22 @@ export default {
       'semi-color-data-17': 'var(--semi-color-data-17)',
       'semi-color-data-18': 'var(--semi-color-data-18)',
       'semi-color-data-19': 'var(--semi-color-data-19)',
+      ink: '#001037',
+      blue: {
+        ...colors.blue,
+        DEFAULT: '#014FF4',
+      },
+      lime: {
+        ...colors.lime,
+        DEFAULT: '#D7FF00',
+      },
+      mist: '#EFF6FF',
     },
     extend: {
+      boxShadow: {
+        line: 'inset 0 0 0 1px rgba(0, 16, 55, 0.08)',
+        soft: '0 22px 70px -44px rgba(0, 16, 55, 0.34)',
+      },
       borderRadius: {
         'semi-border-radius-extra-small':
           'var(--semi-border-radius-extra-small)',
@@ -142,6 +159,24 @@ export default {
         'semi-border-radius-large': 'var(--semi-border-radius-large)',
         'semi-border-radius-circle': 'var(--semi-border-radius-circle)',
         'semi-border-radius-full': 'var(--semi-border-radius-full)',
+      },
+      fontFamily: {
+        sans: [
+          '"SF Pro Display"',
+          '"SF Pro Text"',
+          '"Helvetica Neue"',
+          '"PingFang SC"',
+          '"Hiragino Sans GB"',
+          'ui-sans-serif',
+          'system-ui',
+          'sans-serif',
+        ],
+        mono: [
+          '"SFMono-Regular"',
+          '"Roboto Mono"',
+          'ui-monospace',
+          'monospace',
+        ],
       },
     },
   },

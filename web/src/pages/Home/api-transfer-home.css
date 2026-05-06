@@ -1,0 +1,1466 @@
+/* Scoped styles imported from /Users/a53/Desktop/API Transfer. */
+.api-transfer-home {
+  color: #001037;
+  background: #f7f9fc;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  --api-transfer-header-height: 82px;
+}
+
+.api-transfer-home * {
+  box-sizing: border-box;
+}
+
+.api-transfer-home {
+  scroll-behavior: smooth;
+}
+
+.api-transfer-home {
+  min-width: 320px;
+  margin: 0;
+  overflow-x: hidden;
+  background: #f7f9fc;
+  font-family: 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang SC',
+    'Hiragino Sans GB', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+}
+
+.api-transfer-home button,
+.api-transfer-home a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.api-transfer-home .site-header {
+  @apply fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-5 text-white transition-colors duration-300 md:px-10 lg:px-16;
+  height: var(--api-transfer-header-height);
+  background: #001037;
+}
+
+.api-transfer-home .site-header[data-elevated='true'] {
+  background: rgba(0, 16, 55, 0.92);
+  backdrop-filter: blur(20px);
+}
+
+.api-transfer-home .brand {
+  @apply flex items-center gap-3 text-[1.45rem] font-semibold leading-none text-white no-underline md:text-[1.7rem];
+}
+
+.api-transfer-home .brand-mark {
+  @apply grid size-10 place-items-center rounded-full bg-white text-base font-bold text-ink md:size-12 md:text-xl;
+}
+
+.api-transfer-home .main-nav {
+  @apply hidden items-center gap-9 text-[1.05rem] text-white/80 lg:flex;
+}
+
+.api-transfer-home .main-nav a {
+  @apply text-white/80 no-underline transition-colors hover:text-white;
+}
+
+.api-transfer-home .header-actions {
+  @apply hidden items-center gap-3 lg:flex;
+}
+
+.api-transfer-home .menu-button {
+  @apply grid size-10 place-items-center rounded-full border border-white/20 bg-white/10 text-white lg:hidden;
+}
+
+.api-transfer-home .button {
+  @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-semibold no-underline transition duration-200;
+}
+
+.api-transfer-home .button-small {
+  @apply h-10 px-5 text-[0.95rem];
+}
+
+.api-transfer-home .button-primary {
+  @apply bg-lime text-ink hover:bg-[#c9f000];
+}
+
+.api-transfer-home .button-ghost-dark {
+  @apply border border-white/40 bg-white/10 text-white hover:bg-white/20;
+}
+
+.api-transfer-home .button-light {
+  @apply bg-[#eef2f8] text-blue hover:bg-[#e2e9f3];
+}
+
+.api-transfer-home .lang-switch {
+  @apply relative grid h-10 w-[82px] grid-cols-2 items-center rounded-full border border-white/25 bg-white/10 p-1 text-sm font-semibold text-white;
+}
+
+.api-transfer-home .lang-switch::before {
+  @apply absolute bottom-1 top-1 w-[35px] rounded-full bg-white content-[''];
+  left: 4px;
+  transform: translateX(var(--lang-thumb, 0));
+  transition: transform 180ms ease;
+}
+
+.api-transfer-home .lang-switch[data-lang='en'] {
+  --lang-thumb: 35px;
+}
+
+.api-transfer-home .lang-switch span {
+  @apply relative z-10 text-center transition-colors;
+}
+
+.api-transfer-home .lang-switch[data-lang='zh'] span:first-child,
+.api-transfer-home .lang-switch[data-lang='en'] span:last-child {
+  @apply text-ink;
+}
+
+.api-transfer-home .mobile-panel {
+  @apply fixed inset-x-4 top-[92px] z-40 hidden rounded-[28px] border border-white/20 bg-ink/95 p-5 text-white shadow-2xl backdrop-blur-2xl lg:hidden;
+}
+
+.api-transfer-home .mobile-panel[data-open='true'] {
+  @apply block;
+}
+
+.api-transfer-home .mobile-panel a {
+  @apply flex min-h-12 items-center justify-between rounded-2xl px-4 text-lg font-semibold text-white no-underline;
+}
+
+.api-transfer-home .hero-shell {
+  @apply relative z-[1] flex flex-col overflow-visible text-white;
+  height: 100svh;
+  min-height: 100svh;
+  background: linear-gradient(180deg, #001033 0%, #0050f8 55%, #5fbdf7 100%);
+}
+
+.api-transfer-home .hero-shell::after {
+  content: none;
+}
+
+.api-transfer-home .hero-main {
+  @apply relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-end px-5 text-center md:px-10;
+  min-height: 0;
+  padding-top: calc(
+    var(--api-transfer-header-height) + clamp(0.7rem, 2.4vh, 1.5rem)
+  );
+  padding-bottom: clamp(0.7rem, 2.1vh, 1.4rem);
+}
+
+.api-transfer-home .hero-stack {
+  @apply flex w-full flex-col items-center;
+  gap: clamp(0.65rem, 1.8vh, 1.15rem);
+}
+
+.api-transfer-home .hero-title {
+  @apply m-0 max-w-[980px] font-black tracking-normal;
+  color: #ffffff;
+  font-size: clamp(3rem, 10.2vh, 7.15rem);
+  line-height: 0.88;
+}
+
+.api-transfer-home .hero-title span {
+  @apply block;
+}
+
+.api-transfer-home .hero-copy {
+  @apply m-0 max-w-3xl text-balance text-[clamp(1rem,2.45vh,1.45rem)] leading-[1.45] text-white/75;
+}
+
+.api-transfer-home .api-address {
+  @apply grid w-full max-w-[620px] items-center rounded-full bg-white text-ink shadow-line;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  min-height: clamp(3.15rem, 7.2vh, 4.35rem);
+  padding-left: clamp(1.25rem, 3.4vw, 2.4rem);
+  padding-right: 0.28rem;
+  column-gap: clamp(1rem, 3vw, 2rem);
+}
+
+.api-transfer-home .api-address span {
+  @apply min-w-0 whitespace-nowrap text-[clamp(1rem,2.25vh,1.36rem)] font-medium;
+}
+
+.api-transfer-home .api-address strong {
+  @apply whitespace-nowrap px-3 text-[clamp(1rem,2.25vh,1.36rem)] font-semibold text-blue;
+}
+
+.api-transfer-home .copy-endpoint {
+  @apply ml-2 mr-1 grid place-items-center rounded-full bg-[#e2e8f0] text-[#6b7280] transition-colors hover:bg-[#d6dee9] hover:text-ink;
+  width: clamp(2.4rem, 6vh, 3.25rem);
+  height: clamp(2.4rem, 6vh, 3.25rem);
+}
+
+.api-transfer-home .hero-actions {
+  @apply flex flex-wrap justify-center gap-3;
+}
+
+.api-transfer-home .hero-actions .button {
+  height: clamp(2.9rem, 6.3vh, 3.45rem);
+}
+
+.api-transfer-home .provider-cloud {
+  @apply relative z-10 mx-auto w-full max-w-7xl px-5 text-center md:px-10;
+  padding-bottom: clamp(0.8rem, 2.9vh, 1.8rem);
+}
+
+.api-transfer-home .provider-title {
+  @apply m-0 text-[clamp(1.05rem,2.6vh,1.55rem)] font-medium text-white/70;
+}
+
+.api-transfer-home .provider-grid {
+  @apply mx-auto mt-4 grid max-w-6xl grid-cols-4 items-center justify-items-center gap-x-4 gap-y-3 sm:grid-cols-7 lg:grid-cols-10;
+}
+
+.api-transfer-home .provider-logo {
+  @apply grid place-items-center rounded-full bg-white shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_14px_34px_-24px_rgba(0,16,55,0.42)];
+  width: clamp(2.55rem, 6.1vh, 3.65rem);
+  height: clamp(2.55rem, 6.1vh, 3.65rem);
+}
+
+.api-transfer-home .provider-logo img {
+  @apply h-[66%] w-[66%] object-contain;
+}
+
+.api-transfer-home .provider-more {
+  @apply text-[clamp(0.9rem,2.3vh,1.12rem)] font-black text-ink;
+}
+
+.api-transfer-home .section {
+  @apply px-5 py-16 md:px-10 md:py-24;
+}
+
+.api-transfer-home .section-inner {
+  @apply mx-auto max-w-7xl;
+}
+
+.api-transfer-home .section-heading {
+  @apply mx-auto mb-10 max-w-5xl text-center;
+}
+
+.api-transfer-home .section-heading h2,
+.api-transfer-home .section-copy h2 {
+  @apply m-0 text-balance text-center text-[clamp(2.35rem,4vw,4rem)] font-semibold leading-[1.08] tracking-normal text-ink;
+}
+
+.api-transfer-home .section-heading p:not(.eyebrow),
+.api-transfer-home .section-copy p:not(.eyebrow) {
+  @apply mx-auto mt-5 max-w-4xl text-[1.18rem] leading-relaxed text-slate-500 md:text-[1.35rem];
+}
+
+.api-transfer-home .eyebrow {
+  @apply mb-6 text-center text-sm font-bold uppercase tracking-normal text-blue;
+}
+
+.api-transfer-home .two-column {
+  @apply grid items-center justify-items-center gap-10;
+}
+
+.api-transfer-home .two-column.reverse {
+  @apply grid-cols-1;
+}
+
+.api-transfer-home .two-column.reverse .section-copy {
+  @apply order-first;
+}
+
+.api-transfer-home .section-copy {
+  @apply mx-auto max-w-5xl text-center;
+}
+
+.api-transfer-home .product-card {
+  @apply rounded-[32px] border border-ink/10 bg-white p-5 md:p-8;
+  box-shadow: none;
+}
+
+.api-transfer-home .routing-product {
+  @apply bg-[#f3f7fc];
+  width: min(1080px, 100%);
+}
+
+.api-transfer-home .product-header {
+  @apply flex items-center justify-between gap-4 pb-5 text-slate-500;
+}
+
+.api-transfer-home .badge-pill {
+  @apply inline-flex min-h-11 w-fit items-center gap-2 rounded-full border border-ink/10 bg-white px-5 text-base font-semibold text-ink;
+  box-shadow: inset 0 0 0 1px rgba(0, 16, 55, 0.04);
+}
+
+.api-transfer-home .metric-grid {
+  @apply grid gap-4 md:grid-cols-3;
+}
+
+.api-transfer-home .metric-grid div {
+  @apply rounded-[28px] border border-ink/10 bg-white p-5;
+  box-shadow: none;
+}
+
+.api-transfer-home .metric-grid span {
+  @apply block text-sm font-medium text-slate-500;
+}
+
+.api-transfer-home .metric-grid strong {
+  @apply mt-5 block text-4xl font-medium text-ink;
+}
+
+.api-transfer-home .workflow-list {
+  @apply mt-5 grid gap-4;
+}
+
+.api-transfer-home .workflow-list article {
+  @apply grid grid-cols-[3rem_1fr] items-start gap-4 rounded-[28px] border border-ink/10 bg-white p-6;
+  box-shadow: none;
+}
+
+.api-transfer-home .workflow-list svg {
+  @apply mt-1 size-7 text-blue;
+}
+
+.api-transfer-home .workflow-list h3 {
+  @apply m-0 text-2xl font-semibold text-ink;
+}
+
+.api-transfer-home .workflow-list p {
+  @apply mt-2 text-lg leading-relaxed text-slate-500;
+}
+
+.api-transfer-home .model-grid {
+  @apply grid gap-6 lg:grid-cols-2;
+}
+
+.api-transfer-home .model-card {
+  @apply flex min-h-[300px] flex-col justify-between rounded-[32px] border border-ink/10 bg-white p-8 md:p-10;
+  box-shadow: none;
+}
+
+.api-transfer-home .model-badge {
+  @apply self-start px-4;
+  min-height: 3rem;
+}
+
+.api-transfer-home .model-badge img {
+  @apply size-5 object-contain;
+}
+
+.api-transfer-home .model-card h3 {
+  @apply mt-16 text-[2rem] font-semibold text-ink md:text-[2.35rem];
+}
+
+.api-transfer-home .model-card p {
+  @apply mt-3 text-xl leading-relaxed text-slate-500;
+}
+
+.api-transfer-home .model-price {
+  @apply mt-10 block font-mono text-xl text-ink;
+}
+
+.api-transfer-home .price-amount {
+  @apply text-[24px] leading-none text-ink;
+}
+
+.api-transfer-home .price-unit {
+  @apply text-slate-500;
+}
+
+.api-transfer-home .tool-product {
+  @apply bg-[#eef6fd];
+}
+
+.api-transfer-home .tool-grid {
+  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.api-transfer-home .tool-grid span {
+  @apply flex min-h-[148px] flex-col items-center justify-center gap-4 rounded-[24px] border border-ink/10 bg-white text-center text-xl font-semibold text-ink;
+  box-shadow: none;
+}
+
+.api-transfer-home .tool-grid img {
+  @apply size-12 object-contain;
+}
+
+.api-transfer-home .pricing-grid {
+  @apply grid gap-6 lg:grid-cols-3;
+}
+
+.api-transfer-home .pricing-card {
+  @apply flex min-h-[520px] flex-col rounded-[32px] border border-ink/10 bg-white p-8;
+  box-shadow: none;
+}
+
+.api-transfer-home .pricing-card.featured {
+  @apply border-transparent text-white;
+  background: linear-gradient(180deg, #001037 0%, #014ff4 58%, #64bfed 100%);
+}
+
+.api-transfer-home .pricing-card.featured .badge-pill {
+  @apply border-white/25 bg-white/10 text-white;
+}
+
+.api-transfer-home .pricing-card h3 {
+  @apply mt-8 text-4xl font-semibold;
+}
+
+.api-transfer-home .pricing-card p {
+  @apply mt-4 text-xl leading-relaxed text-slate-500;
+}
+
+.api-transfer-home .pricing-card.featured p {
+  @apply text-white/80;
+}
+
+.api-transfer-home .price {
+  @apply mt-10 flex items-end gap-2 text-6xl font-semibold text-ink;
+}
+
+.api-transfer-home .pricing-card.featured .price {
+  @apply text-white;
+}
+
+.api-transfer-home .price small {
+  @apply pb-2 text-lg font-medium text-slate-500;
+}
+
+.api-transfer-home .pricing-card.featured .price small {
+  @apply text-white;
+}
+
+.api-transfer-home .feature-list {
+  @apply mt-9 grid gap-4 text-xl text-slate-500;
+}
+
+.api-transfer-home .pricing-card.featured .feature-list {
+  @apply text-white;
+}
+
+.api-transfer-home .feature-list li {
+  @apply flex items-center gap-3;
+}
+
+.api-transfer-home .feature-list svg {
+  @apply size-5 shrink-0;
+}
+
+.api-transfer-home .pricing-card.featured .feature-list svg {
+  @apply text-white;
+}
+
+.api-transfer-home .pricing-card .button {
+  @apply mt-auto w-full;
+}
+
+.api-transfer-home .docs-grid {
+  @apply grid gap-5 md:grid-cols-3;
+}
+
+.api-transfer-home .doc-step {
+  @apply rounded-[28px] border border-ink/10 bg-white p-7;
+  box-shadow: none;
+}
+
+.api-transfer-home .doc-step span {
+  @apply grid size-12 place-items-center rounded-full bg-blue text-xl font-bold text-white;
+}
+
+.api-transfer-home .doc-step h3 {
+  @apply mt-9 text-2xl font-semibold text-ink;
+}
+
+.api-transfer-home .doc-step p {
+  @apply mt-3 text-lg leading-relaxed text-slate-500;
+}
+
+.api-transfer-home .faq-wrap {
+  @apply mx-auto max-w-5xl;
+}
+
+.api-transfer-home .faq-item {
+  @apply border-b border-ink/10 py-6;
+}
+
+.api-transfer-home .faq-button {
+  @apply flex w-full items-center justify-between gap-6 text-left text-2xl font-semibold text-ink;
+}
+
+.api-transfer-home .faq-item p {
+  @apply mt-4 max-w-3xl text-xl leading-relaxed text-slate-500;
+}
+
+.api-transfer-home .final-card {
+  @apply rounded-[36px] border border-ink/10 p-10 text-center shadow-soft md:p-16;
+  background: linear-gradient(180deg, #001037 0%, #014ff4 58%, #64bfed 100%);
+}
+
+.api-transfer-home .final-card h2 {
+  @apply mx-auto max-w-5xl text-[clamp(2.5rem,7vh,5.8rem)] font-semibold leading-[1.05] tracking-normal text-white;
+}
+
+.api-transfer-home .final-card .eyebrow {
+  @apply text-white/60;
+}
+
+.api-transfer-home .footer {
+  @apply px-5 pb-10 text-center text-slate-500 md:px-10;
+}
+@media (max-width: 640px) {
+  .api-transfer-home {
+    --api-transfer-header-height: 72px;
+  }
+
+  .api-transfer-home .site-header {
+    @apply px-4;
+  }
+
+  .api-transfer-home .hero-title {
+    max-width: 330px;
+    font-size: clamp(2.2rem, 7.8vh, 3.15rem);
+    line-height: 0.96;
+  }
+
+  .api-transfer-home .api-address {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 3.15rem;
+    width: calc(100vw - 2.5rem);
+    max-width: 292px;
+    padding-left: 1rem;
+    padding-right: 2.7rem;
+    overflow: hidden;
+  }
+
+  .api-transfer-home .api-address span,
+  .api-transfer-home .api-address strong {
+    font-size: 0.82rem;
+  }
+
+  .api-transfer-home .api-address strong {
+    padding-left: 0.5rem;
+    padding-right: 0.3rem;
+  }
+
+  .api-transfer-home .copy-endpoint {
+    position: absolute;
+    top: 50%;
+    right: 0.25rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    margin: 0;
+    transform: translateY(-50%);
+  }
+
+  .api-transfer-home .provider-grid {
+    @apply gap-x-4 gap-y-3;
+  }
+
+  .api-transfer-home .provider-logo {
+    width: clamp(2.25rem, 5.8vh, 2.7rem);
+    height: clamp(2.25rem, 5.8vh, 2.7rem);
+  }
+
+  .api-transfer-home .section {
+    @apply py-14;
+  }
+
+  .api-transfer-home .model-card,
+  .api-transfer-home .pricing-card {
+    @apply min-h-0;
+  }
+}
+
+/* Restored static-page visual baseline: centered sections, light cards, quiet surfaces. */
+.api-transfer-home .site-header {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  min-height: var(--api-transfer-header-height);
+  background: #001033;
+  box-shadow: inset 0 1px 0 rgba(224, 246, 255, 0.08);
+}
+
+.api-transfer-home .site-header[data-elevated='true'] {
+  background: #001033;
+  box-shadow:
+    inset 0 1px 0 rgba(224, 246, 255, 0.08),
+    0 14px 30px -24px rgba(0, 39, 80, 0.32);
+}
+
+.api-transfer-home .hero-shell {
+  min-height: calc(100svh - var(--api-transfer-header-height));
+  height: auto;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    #001033 0%,
+    #0050f8 50%,
+    #2d8cf7 72%,
+    #8fcdf7 90%,
+    #e9f7ff 100%
+  );
+}
+
+.api-transfer-home .hero-shell::after {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: clamp(180px, 28vh, 320px);
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(248, 249, 252, 0) 0%,
+    rgba(224, 246, 255, 0.36) 48%,
+    #f7f9fc 100%
+  );
+  filter: blur(14px);
+  transform: translateY(18%);
+}
+
+.api-transfer-home .hero-main {
+  flex: 1 0 auto;
+  justify-content: center;
+  padding-top: clamp(18px, 4vh, 44px);
+  padding-bottom: clamp(18px, 3vh, 34px);
+}
+
+.api-transfer-home .hero-stack {
+  gap: clamp(14px, 2.2vh, 24px);
+}
+
+.api-transfer-home .hero-title {
+  display: grid;
+  gap: clamp(10px, 1.8vh, 22px);
+  max-width: min(960px, 100%);
+  font-size: clamp(56px, min(8.5vw, 10vh), 118px);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.api-transfer-home .hero-title span {
+  white-space: nowrap;
+}
+
+.api-transfer-home .hero-copy {
+  max-width: 900px;
+  color: rgba(250, 254, 255, 0.72);
+  font-size: clamp(18px, 2vw, 26px);
+}
+
+.api-transfer-home .api-address {
+  max-width: 620px;
+  min-height: 58px;
+  box-shadow: none;
+}
+
+.api-transfer-home .provider-cloud {
+  padding-bottom: clamp(34px, 5.2vh, 62px);
+}
+
+.api-transfer-home .provider-title {
+  color: rgba(250, 254, 255, 0.68);
+  font-size: clamp(20px, 2.2vw, 30px);
+}
+
+.api-transfer-home .provider-grid {
+  max-width: 1120px;
+  margin-top: clamp(28px, 4vh, 42px);
+  gap: clamp(28px, 4vh, 40px) clamp(28px, 4vw, 54px);
+}
+
+.api-transfer-home .provider-logo {
+  width: clamp(42px, 5.8vh, 60px);
+  height: clamp(42px, 5.8vh, 60px);
+  color: #001037;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.api-transfer-home .provider-more {
+  width: clamp(42px, 5.8vh, 60px);
+  height: clamp(42px, 5.8vh, 60px);
+  border-radius: 999px;
+  background: rgba(0, 16, 55, 0.1);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 14px 34px -28px rgba(0, 16, 55, 0.3);
+}
+
+.api-transfer-home .section {
+  padding: clamp(86px, 10vh, 128px) 24px;
+  scroll-margin-top: calc(var(--api-transfer-header-height) + 24px);
+}
+
+.api-transfer-home .section-inner,
+.api-transfer-home .faq-wrap {
+  max-width: 1180px;
+}
+
+.api-transfer-home .section-heading,
+.api-transfer-home .section-copy {
+  width: min(1120px, 100%);
+  max-width: 1120px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.api-transfer-home .section-heading {
+  margin-bottom: clamp(34px, 5vh, 58px);
+}
+
+.api-transfer-home .eyebrow {
+  margin-bottom: 22px;
+  color: #014ff4;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: none;
+}
+
+.api-transfer-home .section-heading h2,
+.api-transfer-home .section-copy h2 {
+  width: 100%;
+  max-width: min(1120px, calc(100vw - 48px));
+  margin-right: auto;
+  margin-left: auto;
+  color: #001037;
+  font-size: clamp(42px, 3.45vw, 58px);
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.api-transfer-home .section-copy h2.platform-heading {
+  display: grid;
+  gap: clamp(12px, 1.5vw, 22px);
+  white-space: normal;
+  text-wrap: balance;
+  overflow-wrap: normal;
+  font-size: clamp(40px, 4.8vw, 64px);
+  line-height: 1.04;
+}
+
+.api-transfer-home .platform-heading span {
+  display: block;
+  white-space: nowrap;
+}
+
+.api-transfer-home .section-heading p:not(.eyebrow),
+.api-transfer-home .section-copy p:not(.eyebrow) {
+  max-width: 940px;
+  margin-right: auto;
+  margin-left: auto;
+  color: #6b7890;
+  font-size: clamp(20px, 1.9vw, 28px);
+  line-height: 1.55;
+}
+
+@media (min-width: 1040px) and (max-width: 1320px) {
+  .api-transfer-home .section-copy h2 {
+    font-size: clamp(38px, 3vw, 50px);
+  }
+}
+
+.api-transfer-home .two-column,
+.api-transfer-home .two-column.reverse {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: clamp(34px, 5vh, 56px);
+}
+
+.api-transfer-home .two-column.reverse .section-copy {
+  order: -1;
+}
+
+.api-transfer-home .product-card,
+.api-transfer-home .model-card,
+.api-transfer-home .pricing-card,
+.api-transfer-home .doc-step,
+.api-transfer-home .final-card {
+  border: 1px solid rgba(0, 16, 55, 0.08);
+  box-shadow: none;
+}
+
+.api-transfer-home .product-card {
+  width: min(1120px, 100%);
+  border-radius: 32px;
+  background: #ffffff;
+}
+
+.api-transfer-home .routing-product {
+  padding: clamp(28px, 4vw, 48px);
+  background: #eef6fd;
+}
+
+.api-transfer-home .product-header {
+  padding-bottom: clamp(24px, 3.4vw, 38px);
+  font-size: clamp(16px, 1.7vw, 22px);
+}
+
+.api-transfer-home .badge-pill {
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 18px;
+  border-color: rgba(0, 16, 55, 0.08);
+  background: #ffffff;
+  color: #001037;
+  box-shadow: inset 0 0 0 1px rgba(0, 16, 55, 0.03);
+}
+
+.api-transfer-home .metric-grid {
+  gap: 18px;
+}
+
+.api-transfer-home .metric-grid div {
+  min-height: 132px;
+  border: 1px solid rgba(0, 16, 55, 0.08);
+  border-radius: 28px;
+  background: #ffffff;
+  padding: 26px;
+}
+
+.api-transfer-home .metric-grid span {
+  color: #6b7890;
+  font-size: 17px;
+}
+
+.api-transfer-home .metric-grid strong {
+  margin-top: 24px;
+  color: #001037;
+  font-size: clamp(42px, 4vw, 58px);
+  line-height: 1;
+}
+
+.api-transfer-home .workflow-list {
+  margin-top: 22px;
+  gap: 18px;
+}
+
+.api-transfer-home .workflow-list article {
+  min-height: 132px;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  border: 1px solid rgba(0, 16, 55, 0.08);
+  border-radius: 28px;
+  padding: 26px 32px;
+}
+
+.api-transfer-home .workflow-list svg {
+  width: 32px;
+  height: 32px;
+  color: #014ff4;
+}
+
+.api-transfer-home .workflow-list h3 {
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.api-transfer-home .workflow-list p {
+  color: #6b7890;
+  font-size: clamp(18px, 1.8vw, 24px);
+}
+
+.api-transfer-home .model-grid {
+  gap: 24px;
+}
+
+.api-transfer-home .model-card {
+  min-height: 330px;
+  border-radius: 30px;
+  padding: clamp(32px, 4vw, 48px);
+  background: #ffffff;
+}
+
+.api-transfer-home .model-badge {
+  align-self: flex-start;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 16px;
+}
+
+.api-transfer-home .model-badge img {
+  width: 22px;
+  height: 22px;
+}
+
+.api-transfer-home .model-card h3 {
+  margin-top: clamp(72px, 9vh, 104px);
+  color: #001037;
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.1;
+}
+
+.api-transfer-home .model-card p {
+  max-width: 760px;
+  color: #6b7890;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.5;
+}
+
+.api-transfer-home .model-price {
+  margin-top: clamp(42px, 5vh, 64px);
+  color: #001037;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.api-transfer-home .price-amount {
+  color: #001037;
+  font-size: 24px;
+}
+
+.api-transfer-home .tool-product {
+  padding: clamp(24px, 3vw, 38px);
+  background: #eef6fd;
+}
+
+.api-transfer-home .tool-grid {
+  gap: 18px;
+}
+
+.api-transfer-home .tool-grid span {
+  min-height: 148px;
+  border: 1px solid rgba(0, 16, 55, 0.08);
+  border-radius: 24px;
+  box-shadow: none;
+}
+
+.api-transfer-home .pricing-grid {
+  gap: 24px;
+}
+
+.api-transfer-home .pricing-card {
+  min-height: 600px;
+  border: 0;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(0, 16, 55, 0.07);
+}
+
+.api-transfer-home .pricing-card.featured {
+  border: 0;
+  background: linear-gradient(180deg, #001037 0%, #014ff4 58%, #64bfed 100%);
+  box-shadow: none;
+}
+
+.api-transfer-home .pricing-card.featured .feature-list,
+.api-transfer-home .pricing-card.featured .feature-list svg,
+.api-transfer-home .pricing-card.featured .price small {
+  color: #ffffff;
+}
+
+.api-transfer-home .pricing-card .feature-list {
+  margin-bottom: 34px;
+}
+
+.api-transfer-home .pricing-card .button {
+  min-height: 54px;
+  margin-top: auto;
+}
+
+.api-transfer-home .doc-step {
+  border-radius: 28px;
+  background: #ffffff;
+}
+
+.api-transfer-home .final-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(1120px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+  padding: clamp(54px, 7vw, 88px) clamp(24px, 6vw, 84px);
+  border: 0;
+  border-radius: clamp(24px, 3vw, 34px);
+  background: radial-gradient(
+      circle at 50% 100%,
+      rgba(100, 191, 237, 0.26),
+      transparent 46%
+    ),
+    linear-gradient(180deg, #001037 0%, #014ff4 58%, #64bfed 100%);
+  color: #ffffff;
+  text-align: center;
+  box-shadow: none;
+  gap: clamp(28px, 4.2vw, 42px);
+}
+
+.api-transfer-home .final-message {
+  max-width: 920px;
+}
+
+.api-transfer-home .final-message h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(40px, 4.5vw, 68px);
+  font-weight: 620;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.api-transfer-home .final-message p {
+  margin: clamp(22px, 3vw, 34px) 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.45;
+}
+
+.api-transfer-home .final-cta {
+  min-width: min(248px, 100%);
+  height: 58px;
+  background: #d7ff00;
+  color: #001037;
+  font-size: 20px;
+  box-shadow: none;
+}
+
+.api-transfer-home .final-note {
+  display: grid;
+  gap: clamp(18px, 2.6vw, 30px);
+  max-width: 920px;
+}
+
+.api-transfer-home .final-note p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(17px, 1.9vw, 22px);
+  line-height: 1.6;
+}
+
+.api-transfer-home #docs .section-heading,
+.api-transfer-home #faq .section-heading {
+  margin-bottom: clamp(58px, 7vw, 86px);
+}
+
+.api-transfer-home #docs .docs-grid {
+  width: min(1120px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.api-transfer-home #docs .doc-step {
+  min-height: 248px;
+  padding: clamp(28px, 3vw, 34px);
+  border: 1px solid rgba(0, 16, 55, 0.08);
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.api-transfer-home #docs .doc-step span {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.api-transfer-home #docs .doc-step h3 {
+  margin-top: clamp(44px, 5vw, 54px);
+  color: #001037;
+  font-size: clamp(23px, 2vw, 28px);
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.api-transfer-home #docs .doc-step p {
+  margin-top: 18px;
+  color: #6b7890;
+  font-size: clamp(18px, 1.7vw, 22px);
+  line-height: 1.58;
+}
+
+.api-transfer-home .faq-wrap {
+  width: min(1120px, 100%);
+  max-width: 1120px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.api-transfer-home .faq-item {
+  border-bottom: 1px solid rgba(0, 16, 55, 0.1);
+  padding: 28px 0;
+}
+
+.api-transfer-home .faq-button {
+  color: #001037;
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 620;
+  line-height: 1.24;
+}
+
+.api-transfer-home .faq-item p {
+  max-width: 760px;
+  margin-top: 18px;
+  color: #6b7890;
+  font-size: clamp(19px, 1.8vw, 23px);
+  line-height: 1.58;
+}
+
+.api-transfer-home .tool-grid span {
+  font-weight: 500;
+}
+
+.api-transfer-home .tool-grid strong {
+  color: #001037;
+  font-size: clamp(20px, 1.9vw, 26px);
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+.api-transfer-home .button,
+.api-transfer-home .badge-pill,
+.api-transfer-home .model-badge,
+.api-transfer-home .main-nav,
+.api-transfer-home .header-actions,
+.api-transfer-home .mobile-panel a,
+.api-transfer-home .api-address strong,
+.api-transfer-home .lang-switch,
+.api-transfer-home .brand {
+  font-weight: 560;
+}
+
+.api-transfer-home .hero-title {
+  font-weight: 650;
+}
+
+.api-transfer-home .section-heading h2,
+.api-transfer-home .section-copy h2,
+.api-transfer-home .model-card h3,
+.api-transfer-home .pricing-card h3,
+.api-transfer-home #docs .doc-step h3,
+.api-transfer-home .faq-button,
+.api-transfer-home .final-message h2 {
+  font-weight: 580;
+}
+
+.api-transfer-home .metric-grid strong,
+.api-transfer-home .price,
+.api-transfer-home .price-amount {
+  font-weight: 560;
+}
+
+.api-transfer-home #docs .doc-step p,
+.api-transfer-home .model-card p,
+.api-transfer-home .pricing-card p,
+.api-transfer-home .faq-item p,
+.api-transfer-home .section-heading p:not(.eyebrow),
+.api-transfer-home .section-copy p:not(.eyebrow) {
+  font-weight: 400;
+}
+
+@keyframes api-transfer-fade-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes api-transfer-logo-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.78);
+  }
+  62% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes api-transfer-gradient-breathe {
+  0%,
+  100% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+}
+
+@keyframes api-transfer-endpoint-shine {
+  0% {
+    background-position: 180% 0;
+  }
+  100% {
+    background-position: -180% 0;
+  }
+}
+
+@keyframes api-transfer-endpoint-swap {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(12px);
+  }
+  14%,
+  78% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(-10px);
+  }
+}
+
+.api-transfer-home .final-card,
+.api-transfer-home .pricing-card.featured {
+  background-size: 100% 135%;
+  animation: api-transfer-gradient-breathe 9s ease-in-out infinite;
+}
+
+.api-transfer-home .api-address strong.endpoint-path {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  color: #014ff4;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  animation: api-transfer-endpoint-swap 2400ms cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+  will-change: opacity, transform, filter;
+}
+
+.api-transfer-home .hero-stack > *,
+.api-transfer-home .provider-title,
+.api-transfer-home .section-heading,
+.api-transfer-home .section-copy,
+.api-transfer-home .product-card,
+.api-transfer-home .model-card,
+.api-transfer-home .pricing-card,
+.api-transfer-home .doc-step,
+.api-transfer-home .faq-item,
+.api-transfer-home .final-card {
+  animation: api-transfer-fade-rise 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.api-transfer-home .hero-stack > :nth-child(1) {
+  animation-delay: 90ms;
+}
+
+.api-transfer-home .hero-stack > :nth-child(2) {
+  animation-delay: 180ms;
+}
+
+.api-transfer-home .hero-stack > :nth-child(3) {
+  animation-delay: 260ms;
+}
+
+.api-transfer-home .hero-stack > :nth-child(4) {
+  animation-delay: 340ms;
+}
+
+.api-transfer-home .provider-logo {
+  animation: api-transfer-logo-pop 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(420ms + var(--i, 0) * 34ms);
+  transition:
+    transform 220ms ease,
+    filter 220ms ease,
+    background-color 220ms ease;
+  will-change: transform;
+}
+
+.api-transfer-home .provider-logo:hover {
+  transform: translateY(-8px) scale(1.08);
+  filter: saturate(1.08);
+}
+
+.api-transfer-home .button {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease;
+}
+
+.api-transfer-home .button::after {
+  position: absolute;
+  inset: -1px auto -1px -55%;
+  width: 42%;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.46),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: transform 560ms ease;
+}
+
+.api-transfer-home .button:hover {
+  transform: translateY(-2px);
+}
+
+.api-transfer-home .button:hover::after {
+  transform: translateX(360%) skewX(-18deg);
+}
+
+.api-transfer-home .button svg {
+  transition: transform 220ms ease;
+}
+
+.api-transfer-home .button:hover svg {
+  transform: translateX(4px);
+}
+
+.api-transfer-home .main-nav a {
+  position: relative;
+}
+
+.api-transfer-home .main-nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  content: '';
+  background: #d7ff00;
+  border-radius: 999px;
+  opacity: 0;
+  transform: scaleX(0.28);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.api-transfer-home .main-nav a:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.api-transfer-home .api-address,
+.api-transfer-home .product-card,
+.api-transfer-home .model-card,
+.api-transfer-home .pricing-card,
+.api-transfer-home .doc-step,
+.api-transfer-home .tool-grid span,
+.api-transfer-home .faq-item,
+.api-transfer-home .final-card {
+  transition:
+    transform 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.api-transfer-home .api-address:hover,
+.api-transfer-home .product-card:hover,
+.api-transfer-home .model-card:hover,
+.api-transfer-home .pricing-card:hover,
+.api-transfer-home .doc-step:hover,
+.api-transfer-home .tool-grid span:hover {
+  transform: translateY(-4px);
+}
+
+.api-transfer-home .product-card:hover,
+.api-transfer-home .model-card:hover,
+.api-transfer-home .pricing-card:hover,
+.api-transfer-home .doc-step:hover,
+.api-transfer-home .tool-grid span:hover {
+  border-color: rgba(1, 79, 244, 0.18);
+}
+
+.api-transfer-home .tool-grid span {
+  animation: api-transfer-fade-rise 660ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(90ms + var(--i, 0) * 46ms);
+}
+
+.api-transfer-home .pricing-card,
+.api-transfer-home .doc-step {
+  animation-delay: calc(80ms + var(--i, 0) * 80ms);
+}
+
+.api-transfer-home .copy-endpoint {
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+.api-transfer-home .copy-endpoint:hover {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+.api-transfer-home .faq-button svg {
+  transition:
+    transform 220ms ease,
+    color 220ms ease;
+}
+
+.api-transfer-home .faq-button:hover svg {
+  color: #014ff4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .api-transfer-home *,
+  .api-transfer-home *::before,
+  .api-transfer-home *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .api-transfer-home .hero-shell {
+    min-height: calc(100svh - var(--api-transfer-header-height));
+  }
+
+  .api-transfer-home .hero-main {
+    padding-top: 28px;
+  }
+
+  .api-transfer-home .hero-title {
+    max-width: 100%;
+    gap: 8px;
+    font-size: clamp(34px, 10vw, 50px);
+  }
+
+  .api-transfer-home .hero-title span:last-child {
+    font-size: clamp(28px, 8vw, 36px);
+  }
+
+  .api-transfer-home .section {
+    padding: 72px 18px;
+  }
+
+  .api-transfer-home .section-heading h2,
+  .api-transfer-home .section-copy h2 {
+    white-space: normal;
+    font-size: clamp(34px, 9vw, 46px);
+  }
+
+  .api-transfer-home .metric-grid,
+  .api-transfer-home .model-grid,
+  .api-transfer-home .pricing-grid,
+  .api-transfer-home .docs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .api-transfer-home #docs .docs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .api-transfer-home .workflow-list article {
+    grid-template-columns: 42px minmax(0, 1fr);
+    padding: 22px;
+  }
+}

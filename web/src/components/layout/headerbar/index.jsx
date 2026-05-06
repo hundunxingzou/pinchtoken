@@ -53,7 +53,7 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const isHomeRoute = location.pathname === '/';
   const useLightTopbar = !isHomeRoute;
   const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
-  const [onHeroSurface, setOnHeroSurface] = useState(isHomeRoute);
+  const onHeroSurface = isHomeRoute;
   const activeLang = currentLang?.startsWith('zh') ? 'zh' : 'en';
   const brandName = systemName || 'CCSub';
   const brandInitial = (brandName || 'C').trim().slice(0, 1).toUpperCase();
@@ -79,48 +79,6 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   useEffect(() => {
     setMobilePanelOpen(false);
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (!isHomeRoute) {
-      setOnHeroSurface(false);
-      return undefined;
-    }
-
-    let animationFrameId = 0;
-
-    const syncHeroSurface = () => {
-      if (animationFrameId) {
-        window.cancelAnimationFrame(animationFrameId);
-      }
-      animationFrameId = window.requestAnimationFrame(() => {
-        const hero = document.querySelector('.api-transfer-home .hero-shell');
-        if (!hero) {
-          setOnHeroSurface(true);
-          return;
-        }
-
-        const heroRect = hero.getBoundingClientRect();
-        setOnHeroSurface(heroRect.top >= -2 && heroRect.bottom > 72);
-      });
-    };
-
-    setOnHeroSurface(true);
-    syncHeroSurface();
-    document.addEventListener('scroll', syncHeroSurface, {
-      capture: true,
-      passive: true,
-    });
-    window.addEventListener('scroll', syncHeroSurface, { passive: true });
-    window.addEventListener('resize', syncHeroSurface);
-    return () => {
-      window.cancelAnimationFrame(animationFrameId);
-      document.removeEventListener('scroll', syncHeroSurface, {
-        capture: true,
-      });
-      window.removeEventListener('scroll', syncHeroSurface);
-      window.removeEventListener('resize', syncHeroSurface);
-    };
-  }, [isHomeRoute]);
 
   const toggleLanguage = () => {
     handleLanguageChange(activeLang === 'zh' ? 'en' : 'zh-CN');

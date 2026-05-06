@@ -50,7 +50,9 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     getUnreadKeys,
   } = useNotifications(statusState);
 
+  const isHomeRoute = location.pathname === '/';
   const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
+  const [onHeroSurface, setOnHeroSurface] = useState(isHomeRoute);
   const activeLang = currentLang?.startsWith('zh') ? 'zh' : 'en';
   const brandName = systemName || 'CCSub';
   const brandInitial = (brandName || 'C').trim().slice(0, 1).toUpperCase();
@@ -77,6 +79,31 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     setMobilePanelOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (!isHomeRoute) {
+      setOnHeroSurface(false);
+      return undefined;
+    }
+
+    const syncHeroSurface = () => {
+      const hero = document.querySelector('.api-transfer-home .hero-shell');
+      if (!hero) {
+        setOnHeroSurface(false);
+        return;
+      }
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      setOnHeroSurface(heroBottom > 72);
+    };
+
+    syncHeroSurface();
+    window.addEventListener('scroll', syncHeroSurface, { passive: true });
+    window.addEventListener('resize', syncHeroSurface);
+    return () => {
+      window.removeEventListener('scroll', syncHeroSurface);
+      window.removeEventListener('resize', syncHeroSurface);
+    };
+  }, [isHomeRoute]);
+
   const toggleLanguage = () => {
     handleLanguageChange(activeLang === 'zh' ? 'en' : 'zh-CN');
   };
@@ -95,7 +122,9 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   };
 
   return (
-    <header className='api-transfer-topbar'>
+    <header
+      className={`api-transfer-topbar ${onHeroSurface ? 'api-transfer-topbar-hero' : ''}`}
+    >
       <NoticeModal
         visible={noticeVisible}
         onClose={handleNoticeClose}

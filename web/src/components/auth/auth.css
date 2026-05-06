@@ -57,7 +57,7 @@ For commercial licensing, please contact support@quantumnous.com
 .api-transfer-auth-form .semi-input-wrapper {
   min-height: var(--api-transfer-auth-control-height);
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 18px !important;
   background: #f2f2f2;
 }
 
@@ -74,11 +74,11 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 .api-transfer-auth-form .semi-input-prefix {
-  margin-left: 8px;
+  margin-left: 20px;
 }
 
 .api-transfer-auth-form .semi-input-suffix {
-  margin-right: 8px;
+  margin-right: 20px;
 }
 
 .api-transfer-auth-form .semi-input {

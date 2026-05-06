@@ -35,6 +35,7 @@ import {
 } from '@douyinfe/semi-illustrations';
 import { StatusContext } from '../../context/Status';
 import { Bell, Megaphone } from 'lucide-react';
+import './NoticeModal.css';
 
 const NoticeModal = ({
   visible,
@@ -130,10 +131,16 @@ const NoticeModal = ({
         <div className='py-12'>
           <Empty
             image={
-              <IllustrationNoContent style={{ width: 150, height: 150 }} />
+              <span className='api-transfer-notice-empty-illustration'>
+                <IllustrationNoContent style={{ width: 150, height: 150 }} />
+              </span>
             }
             darkModeImage={
-              <IllustrationNoContentDark style={{ width: 150, height: 150 }} />
+              <span className='api-transfer-notice-empty-illustration'>
+                <IllustrationNoContentDark
+                  style={{ width: 150, height: 150 }}
+                />
+              </span>
             }
             description={t('暂无公告')}
           />
@@ -155,10 +162,16 @@ const NoticeModal = ({
         <div className='py-12'>
           <Empty
             image={
-              <IllustrationNoContent style={{ width: 150, height: 150 }} />
+              <span className='api-transfer-notice-empty-illustration'>
+                <IllustrationNoContent style={{ width: 150, height: 150 }} />
+              </span>
             }
             darkModeImage={
-              <IllustrationNoContentDark style={{ width: 150, height: 150 }} />
+              <span className='api-transfer-notice-empty-illustration'>
+                <IllustrationNoContentDark
+                  style={{ width: 150, height: 150 }}
+                />
+              </span>
             }
             description={t('暂无系统公告')}
           />

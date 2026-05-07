@@ -71,6 +71,13 @@ For commercial licensing, please contact support@quantumnous.com
   padding: 0 20px;
 }
 
+.api-transfer-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  min-width: 0;
+}
+
 .api-transfer-brand {
   display: flex;
   flex: 0 0 auto;
@@ -116,9 +123,9 @@ For commercial licensing, please contact support@quantumnous.com
 .api-transfer-nav {
   display: none;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 36px;
-  margin: 0 28px;
+  margin: 0;
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.05rem;
   font-weight: 500;

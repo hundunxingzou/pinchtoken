@@ -185,26 +185,33 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
       />
 
       <div className='api-transfer-topbar-inner'>
-        <Link className='api-transfer-brand' to='/' aria-label={t('首页')}>
-          <span className='api-transfer-brand-mark' aria-hidden='true'>
-            {brandInitial}
-          </span>
-          <span>{brandName}</span>
-        </Link>
+        <div className='api-transfer-topbar-left'>
+          <Link className='api-transfer-brand' to='/' aria-label={t('首页')}>
+            <span className='api-transfer-brand-mark' aria-hidden='true'>
+              {brandInitial}
+            </span>
+            <span>{brandName}</span>
+          </Link>
 
-        <nav className='api-transfer-nav' aria-label={t('顶部导航')}>
-          {navLinks.map((link) =>
-            link.external ? (
-              <a key={link.text} href={link.href} target='_blank' rel='noopener noreferrer'>
-                {link.text}
-              </a>
-            ) : (
-              <Link key={link.text} to={link.to}>
-                {link.text}
-              </Link>
-            )
-          )}
-        </nav>
+          <nav className='api-transfer-nav' aria-label={t('顶部导航')}>
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.text}
+                  href={link.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  {link.text}
+                </a>
+              ) : (
+                <Link key={link.text} to={link.to}>
+                  {link.text}
+                </Link>
+              )
+            )}
+          </nav>
+        </div>
 
         <div className='api-transfer-actions'>
           <button

@@ -17,6 +17,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+.api-transfer-auth-page {
+  min-height: calc(100vh - 60px - 160px);
+  margin-top: 60px;
+  overflow-y: auto;
+  background: var(--semi-color-bg-0);
+  color: var(--semi-color-text-0);
+}
+
 .api-transfer-auth-brand {
   display: inline-flex;
   width: 100%;
@@ -48,6 +56,40 @@ For commercial licensing, please contact support@quantumnous.com
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.api-transfer-auth-brand--header {
+  gap: 8px;
+  color: inherit;
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.api-transfer-auth-brand--header:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.api-transfer-auth-brand-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.api-transfer-auth-brand-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 200ms ease;
+}
+
+.api-transfer-auth-brand--header:hover .api-transfer-auth-brand-logo img {
+  transform: scale(1.1);
 }
 
 .api-transfer-auth-form {
@@ -157,6 +199,11 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 /* Dark mode overrides */
+body[theme-mode='dark'] .api-transfer-auth-page {
+  background: var(--semi-color-bg-0);
+  color: var(--semi-color-text-0);
+}
+
 body[theme-mode='dark'] .api-transfer-auth-brand {
   color: #ffffff;
 }

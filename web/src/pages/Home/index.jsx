@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -30,7 +30,7 @@ import {
   Route,
   WalletCards,
 } from 'lucide-react';
-import { API } from '../../helpers';
+import { API, copy as copyToClipboard } from '../../helpers';
 import NoticeModal from '../../components/layout/NoticeModal';
 import { StatusContext } from '../../context/Status';
 import { UserContext } from '../../context/User';
@@ -54,6 +54,8 @@ const landingCopy = {
     heroTitleTwo: '大模型接口',
     heroTitleThree: '网关',
     heroCopy: '更好的价格，更好的稳定性，只需要将模型基址替换为：',
+    copyLabel: '复制 API 地址',
+    copySuccess: '已复制',
     heroPrimary: '开始接入',
     heroSecondary: '查看模型',
     providerTitle: '支持众多的大模型供应商',
@@ -152,6 +154,8 @@ const landingCopy = {
     heroTitleThree: 'gateway',
     heroCopy:
       'Better pricing, better stability. Just replace your model base URL with:',
+    copyLabel: 'Copy API endpoint',
+    copySuccess: 'Copied',
     heroPrimary: 'Start building',
     heroSecondary: 'View models',
     providerTitle: 'Supported by a broad model provider network',
@@ -302,6 +306,7 @@ function normalizeBaseUrl(baseUrl) {
 function Hero({ baseUrl, t }) {
   const [copied, setCopied] = useState(false);
   const [endpointIndex, setEndpointIndex] = useState(0);
+  const copyFeedbackTimerRef = useRef(null);
   const endpointPath = endpointPaths[endpointIndex];
   const displayBaseUrl = normalizeBaseUrl(baseUrl);
   const [userState] = useContext(UserContext);
@@ -315,10 +320,29 @@ function Hero({ baseUrl, t }) {
     return () => window.clearInterval(timer);
   }, []);
 
+  useEffect(
+    () => () => {
+      if (copyFeedbackTimerRef.current) {
+        window.clearTimeout(copyFeedbackTimerRef.current);
+      }
+    },
+    [],
+  );
+
   const copyEndpoint = async () => {
-    await navigator.clipboard?.writeText(`${displayBaseUrl}${endpointPath}`);
+    const copiedSuccessfully = await copyToClipboard(
+      `${displayBaseUrl}${endpointPath}`,
+    );
+    if (!copiedSuccessfully) return;
+
     setCopied(true);
-    window.setTimeout(() => setCopied(false), 1200);
+    if (copyFeedbackTimerRef.current) {
+      window.clearTimeout(copyFeedbackTimerRef.current);
+    }
+    copyFeedbackTimerRef.current = window.setTimeout(() => {
+      setCopied(false);
+      copyFeedbackTimerRef.current = null;
+    }, 1400);
   };
 
   return (
@@ -343,8 +367,15 @@ function Hero({ baseUrl, t }) {
               className='copy-endpoint'
               type='button'
               onClick={copyEndpoint}
-              aria-label='Copy API endpoint'
+              aria-label={copied ? t.copySuccess : t.copyLabel}
             >
+              <span
+                className='copy-endpoint-feedback'
+                data-visible={copied}
+                aria-hidden={!copied}
+              >
+                {t.copySuccess}
+              </span>
               {copied ? (
                 <Check size={22} aria-hidden='true' />
               ) : (
@@ -362,10 +393,14 @@ function Hero({ baseUrl, t }) {
               <span>{t.heroPrimary}</span>
               <ArrowRight size={21} aria-hidden='true' />
             </button>
-            <a className='button button-ghost-dark' href='#models'>
+            <button
+              className='button button-ghost-dark'
+              type='button'
+              onClick={() => navigate('/pricing')}
+            >
               <span>{t.heroSecondary}</span>
               <Boxes size={20} aria-hidden='true' />
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -783,9 +818,6 @@ export default function Home() {
         <Faq t={t} />
         <FinalCta t={t} />
       </main>
-      <footer className='footer'>
-        <p>CCSub - {t.footer}</p>
-      </footer>
     </div>
   );
 }

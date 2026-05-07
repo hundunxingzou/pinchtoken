@@ -18,6 +18,16 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 .api-transfer-topbar {
+  --api-transfer-topbar-control-size: 40px;
+  --api-transfer-topbar-control-gap: 12px;
+  --api-transfer-topbar-control-pad: 4px;
+  --api-transfer-topbar-lang-width: calc(
+    var(--api-transfer-topbar-control-size) +
+      var(--api-transfer-topbar-control-size) + 2px
+  );
+  --api-transfer-topbar-lang-thumb: calc(
+    var(--api-transfer-topbar-control-size) - 3px
+  );
   position: fixed;
   top: 0;
   right: 0;
@@ -26,8 +36,8 @@ For commercial licensing, please contact support@quantumnous.com
   width: 100%;
   min-height: 64px;
   color: #ffffff;
-  background-color: #001033;
-  box-shadow: inset 0 1px 0 rgba(224, 246, 255, 0.08);
+  background-color: #18181b;
+  box-shadow: none;
   transition:
     background-color 220ms ease,
     box-shadow 220ms ease,
@@ -35,25 +45,12 @@ For commercial licensing, please contact support@quantumnous.com
     transform 220ms ease;
 }
 
-.api-transfer-topbar-hero {
-  background-color: rgba(0, 16, 51, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: inset 0 1px 0 rgba(224, 246, 255, 0.08);
-}
-
 .api-transfer-topbar-light {
-  color: #001037;
+  color: #18181b;
   background-color: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 1px 0 rgba(0, 16, 55, 0.06);
-}
-
-.api-transfer-topbar-scrolled-away {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-100%);
+  box-shadow: none;
 }
 
 .api-transfer-topbar-inner {
@@ -90,7 +87,7 @@ For commercial licensing, please contact support@quantumnous.com
   place-items: center;
   overflow: hidden;
   border-radius: 999px;
-  color: #001037;
+  color: #18181b;
   background: #ffffff;
   font-size: 1rem;
   font-weight: 700;
@@ -150,15 +147,35 @@ For commercial licensing, please contact support@quantumnous.com
   display: none;
   flex: 0 0 auto;
   align-items: center;
-  gap: 12px;
+  gap: var(--api-transfer-topbar-control-gap);
+}
+
+.api-transfer-theme-button.semi-button {
+  width: var(--api-transfer-topbar-control-size) !important;
+  min-width: var(--api-transfer-topbar-control-size) !important;
+  height: var(--api-transfer-topbar-control-size) !important;
+  min-height: var(--api-transfer-topbar-control-size) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: currentColor !important;
+  background: rgba(24, 24, 27, 0.04) !important;
+  box-shadow: none !important;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.api-transfer-theme-button.semi-button:hover,
+.api-transfer-theme-button.semi-button:focus-visible {
+  background: rgba(24, 24, 27, 0.08) !important;
 }
 
 .api-transfer-icon-button,
 .api-transfer-mobile-menu {
   position: relative;
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: var(--api-transfer-topbar-control-size);
+  height: var(--api-transfer-topbar-control-size);
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
@@ -168,6 +185,10 @@ For commercial licensing, please contact support@quantumnous.com
     background-color 180ms ease,
     border-color 180ms ease,
     transform 180ms ease;
+}
+
+.api-transfer-icon-button {
+  border: 0;
 }
 
 .api-transfer-icon-button:hover,
@@ -194,12 +215,12 @@ For commercial licensing, please contact support@quantumnous.com
 .api-transfer-lang-switch {
   position: relative;
   display: grid;
-  width: 82px;
-  height: 40px;
+  width: var(--api-transfer-topbar-lang-width);
+  height: var(--api-transfer-topbar-control-size);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
-  padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: var(--api-transfer-topbar-control-pad);
+  border: 0;
   border-radius: 999px;
   color: #ffffff;
   background: rgba(255, 255, 255, 0.1);
@@ -209,10 +230,10 @@ For commercial licensing, please contact support@quantumnous.com
 
 .api-transfer-lang-switch::before {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: 35px;
+  top: var(--api-transfer-topbar-control-pad);
+  bottom: var(--api-transfer-topbar-control-pad);
+  left: var(--api-transfer-topbar-control-pad);
+  width: var(--api-transfer-topbar-lang-thumb);
   content: '';
   border-radius: 999px;
   background: #ffffff;
@@ -221,7 +242,7 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 .api-transfer-lang-switch[data-lang='en'] {
-  --api-transfer-lang-thumb: 35px;
+  --api-transfer-lang-thumb: var(--api-transfer-topbar-lang-thumb);
 }
 
 .api-transfer-lang-switch span {
@@ -233,7 +254,7 @@ For commercial licensing, please contact support@quantumnous.com
 
 .api-transfer-lang-switch[data-lang='zh'] span:first-child,
 .api-transfer-lang-switch[data-lang='en'] span:last-child {
-  color: #001037;
+  color: #18181b;
 }
 
 .api-transfer-topbar-button,
@@ -243,7 +264,8 @@ For commercial licensing, please contact support@quantumnous.com
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 40px;
+  height: var(--api-transfer-topbar-control-size);
+  min-height: var(--api-transfer-topbar-control-size);
   border-radius: 999px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -263,18 +285,19 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 .api-transfer-topbar-button-primary {
-  padding: 0 20px;
-  color: #001037;
+  padding: 0 calc(var(--api-transfer-topbar-control-size) - 20px);
+  border: 0;
+  color: #18181b;
   background: #d7ff00;
 }
 
 .api-transfer-topbar-button-primary:hover {
-  color: #001037;
+  color: #18181b;
   background: #c9f000;
 }
 
 .api-transfer-topbar-button-ghost {
-  padding: 0 18px;
+  padding: 0 calc(var(--api-transfer-topbar-control-size) - 22px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
@@ -286,20 +309,36 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 .api-transfer-user-button {
-  max-width: 210px;
-  padding: 4px 12px 4px 4px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  max-width: calc(
+    var(--api-transfer-topbar-control-size) +
+      var(--api-transfer-topbar-control-size) +
+      var(--api-transfer-topbar-control-size) +
+      var(--api-transfer-topbar-control-size) +
+      var(--api-transfer-topbar-control-size) + 10px
+  );
+  padding:
+    0 12px 0
+    var(--api-transfer-topbar-control-pad);
+  border: 0;
   color: #ffffff;
   background: rgba(255, 255, 255, 0.1);
 }
 
 .api-transfer-user-button span {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: calc(
+    var(--api-transfer-topbar-control-size) -
+      var(--api-transfer-topbar-control-pad) -
+      var(--api-transfer-topbar-control-pad)
+  );
+  height: calc(
+    var(--api-transfer-topbar-control-size) -
+      var(--api-transfer-topbar-control-pad) -
+      var(--api-transfer-topbar-control-pad)
+  );
   place-items: center;
   border-radius: 999px;
-  color: #001037;
+  color: #18181b;
   background: #ffffff;
   font-size: 0.9rem;
   font-weight: 700;
@@ -328,8 +367,8 @@ For commercial licensing, please contact support@quantumnous.com
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 28px;
   color: #ffffff;
-  background: rgba(0, 16, 55, 0.96);
-  box-shadow: 0 24px 60px -36px rgba(0, 16, 55, 0.7);
+  background: rgba(18, 18, 20, 0.96);
+  box-shadow: 0 24px 60px -36px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(24px);
 }
 
@@ -364,56 +403,56 @@ For commercial licensing, please contact support@quantumnous.com
   min-height: 46px;
   margin-top: 8px;
   border: 0;
-  color: #001037;
+  color: #18181b;
   background: #d7ff00;
 }
 
 .api-transfer-topbar-light .api-transfer-brand,
 .api-transfer-topbar-light .api-transfer-brand:hover {
-  color: #001037;
+  color: #18181b;
 }
 
 .api-transfer-topbar-light .api-transfer-brand-mark {
-  border: 1px solid rgba(0, 16, 55, 0.12);
-  color: #001037;
+  border: 1px solid rgba(24, 24, 27, 0.12);
+  color: #18181b;
   background: #ffffff;
-  box-shadow: 0 10px 28px -22px rgba(0, 16, 55, 0.55);
+  box-shadow: 0 10px 28px -22px rgba(24, 24, 27, 0.5);
 }
 
 .api-transfer-topbar-light .api-transfer-nav,
 .api-transfer-topbar-light .api-transfer-nav a {
-  color: rgba(0, 16, 55, 0.72);
+  color: rgba(24, 24, 27, 0.72);
 }
 
 .api-transfer-topbar-light .api-transfer-nav a:hover {
-  color: #001037;
+  color: #18181b;
 }
 
 .api-transfer-topbar-light .api-transfer-nav a::after {
-  background: #0050f8;
+  background: #d7ff00;
 }
 
 .api-transfer-topbar-light .api-transfer-icon-button,
 .api-transfer-topbar-light .api-transfer-mobile-menu {
-  border-color: rgba(0, 16, 55, 0.14);
-  color: #001037;
-  background: rgba(0, 16, 55, 0.04);
+  border-color: rgba(24, 24, 27, 0.14);
+  color: #18181b;
+  background: rgba(24, 24, 27, 0.04);
 }
 
 .api-transfer-topbar-light .api-transfer-icon-button:hover,
 .api-transfer-topbar-light .api-transfer-mobile-menu:hover {
-  border-color: rgba(0, 16, 55, 0.24);
-  background: rgba(0, 16, 55, 0.08);
+  border-color: rgba(24, 24, 27, 0.24);
+  background: rgba(24, 24, 27, 0.08);
 }
 
 .api-transfer-topbar-light .api-transfer-lang-switch {
-  border-color: rgba(0, 16, 55, 0.16);
-  color: #001037;
-  background: rgba(0, 16, 55, 0.04);
+  border-color: rgba(24, 24, 27, 0.16);
+  color: #18181b;
+  background: rgba(24, 24, 27, 0.04);
 }
 
 .api-transfer-topbar-light .api-transfer-lang-switch::before {
-  background: #001037;
+  background: #18181b;
 }
 
 .api-transfer-topbar-light
@@ -427,39 +466,151 @@ For commercial licensing, please contact support@quantumnous.com
 
 .api-transfer-topbar-light .api-transfer-topbar-button-ghost,
 .api-transfer-topbar-light .api-transfer-user-button {
-  border-color: rgba(0, 16, 55, 0.18);
-  color: #001037;
-  background: rgba(0, 16, 55, 0.04);
+  border-color: rgba(24, 24, 27, 0.18);
+  color: #18181b;
+  background: rgba(24, 24, 27, 0.04);
 }
 
 .api-transfer-topbar-light .api-transfer-topbar-button-ghost:hover,
 .api-transfer-topbar-light .api-transfer-user-button:hover {
-  color: #001037;
-  background: rgba(0, 16, 55, 0.08);
+  color: #18181b;
+  background: rgba(24, 24, 27, 0.08);
 }
 
 .api-transfer-topbar-light .api-transfer-user-button span {
   color: #ffffff;
-  background: #001037;
+  background: #18181b;
 }
 
 .api-transfer-topbar-light .api-transfer-mobile-panel {
-  border-color: rgba(0, 16, 55, 0.1);
-  color: #001037;
+  border-color: rgba(24, 24, 27, 0.1);
+  color: #18181b;
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 24px 60px -36px rgba(0, 16, 55, 0.34);
+  box-shadow: 0 24px 60px -36px rgba(24, 24, 27, 0.3);
 }
 
 .api-transfer-topbar-light
   .api-transfer-mobile-panel
   a:not(.api-transfer-mobile-action) {
-  color: #001037;
+  color: #18181b;
 }
 
 .api-transfer-topbar-light
   .api-transfer-mobile-panel
   a:not(.api-transfer-mobile-action):hover {
-  background: rgba(0, 16, 55, 0.06);
+  background: rgba(24, 24, 27, 0.06);
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home {
+  color: #ffffff;
+  background-color: rgba(1, 16, 52, 0.3);
+  backdrop-filter: blur(18px) saturate(1.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  box-shadow: none;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-brand,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-brand:hover {
+  color: #ffffff;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-brand-mark {
+  border: 0;
+  color: #011034;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: none;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-nav,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-nav a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-nav a:hover {
+  color: #ffffff;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-icon-button,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-mobile-menu,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-theme-button,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-lang-switch,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-topbar-button-ghost,
+.api-transfer-topbar-light.api-transfer-topbar-home .api-transfer-user-button {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-theme-button.semi-button {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-icon-button:hover,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-mobile-menu:hover,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-theme-button:hover,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-theme-button:focus-visible,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-topbar-button-ghost:hover,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-user-button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-theme-button.semi-button:hover,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-theme-button.semi-button:focus-visible {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-lang-switch::before {
+  background: #ffffff;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-lang-switch[data-lang='zh']
+  span:first-child,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-lang-switch[data-lang='en']
+  span:last-child {
+  color: #011034;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-user-button
+  span {
+  color: #011034;
+  background: #ffffff;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-mobile-panel
+  .api-transfer-lang-switch {
+  color: #18181b;
+  background: rgba(24, 24, 27, 0.04);
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-mobile-panel
+  .api-transfer-lang-switch::before {
+  background: #18181b;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-mobile-panel
+  .api-transfer-lang-switch[data-lang='zh']
+  span:first-child,
+.api-transfer-topbar-light.api-transfer-topbar-home
+  .api-transfer-mobile-panel
+  .api-transfer-lang-switch[data-lang='en']
+  span:last-child {
+  color: #ffffff;
 }
 
 @media (min-width: 1024px) {
@@ -500,7 +651,7 @@ body[theme-mode='dark'] .api-transfer-topbar-light {
   background-color: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-brand,
@@ -510,7 +661,7 @@ body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-brand:hover {
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-brand-mark {
   border: none;
-  color: #001037;
+  color: #18181b;
   background: #ffffff;
   box-shadow: none;
 }
@@ -529,16 +680,34 @@ body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-nav a::after {
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-icon-button,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-theme-button,
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-menu {
   border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
   background: rgba(255, 255, 255, 0.1);
 }
 
+body[theme-mode='dark']
+  .api-transfer-topbar-light
+  .api-transfer-theme-button.semi-button {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-icon-button:hover,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-theme-button:hover,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-theme-button:focus-visible,
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-menu:hover {
   border-color: rgba(255, 255, 255, 0.34);
   background: rgba(255, 255, 255, 0.18);
+}
+
+body[theme-mode='dark']
+  .api-transfer-topbar-light
+  .api-transfer-theme-button.semi-button:hover,
+body[theme-mode='dark']
+  .api-transfer-topbar-light
+  .api-transfer-theme-button.semi-button:focus-visible {
+  background: rgba(255, 255, 255, 0.18) !important;
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch {
@@ -553,7 +722,7 @@ body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch::be
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch[data-lang='zh'] span:first-child,
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch[data-lang='en'] span:last-child {
-  color: #001037;
+  color: #18181b;
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-topbar-button-ghost,
@@ -570,15 +739,15 @@ body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-user-button:hov
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-user-button span {
-  color: #001037;
+  color: #18181b;
   background: #ffffff;
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel {
   border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  background: rgba(0, 16, 55, 0.96);
-  box-shadow: 0 24px 60px -36px rgba(0, 16, 55, 0.7);
+  background: rgba(18, 18, 20, 0.96);
+  box-shadow: 0 24px 60px -36px rgba(0, 0, 0, 0.7);
 }
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel a:not(.api-transfer-mobile-action) {
@@ -587,4 +756,11 @@ body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel a:
 
 body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel a:not(.api-transfer-mobile-action):hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light.api-transfer-topbar-home {
+  background-color: rgba(1, 16, 52, 0.58);
+  backdrop-filter: blur(18px) saturate(1.14);
+  -webkit-backdrop-filter: blur(18px) saturate(1.14);
+  box-shadow: none;
 }

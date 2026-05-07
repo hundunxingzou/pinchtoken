@@ -64,6 +64,7 @@ import { UserContext } from '../../context/User';
 import { StatusContext } from '../../context/Status';
 import { useTranslation } from 'react-i18next';
 import { SiDiscord } from 'react-icons/si';
+import './auth.css';
 
 const RegisterForm = () => {
   let navigate = useNavigate();
@@ -390,16 +391,24 @@ const RegisterForm = () => {
     }
   };
 
+  const renderAuthBrand = () => (
+    <Link
+      to='/'
+      className='api-transfer-auth-brand api-transfer-auth-brand--header'
+      aria-label={systemName}
+    >
+      <span className='api-transfer-auth-brand-logo' aria-hidden='true'>
+        <img src={logo} alt='' />
+      </span>
+      <span className='api-transfer-auth-brand-name'>{systemName}</span>
+    </Link>
+  );
+
   const renderOAuthOptions = () => {
     return (
       <div className='flex flex-col items-center'>
         <div className='w-full max-w-md'>
-          <div className='flex items-center justify-center mb-6 gap-2'>
-            <img src={logo} alt='Logo' className='h-10 rounded-full' />
-            <Title heading={3} className='!text-gray-800'>
-              {systemName}
-            </Title>
-          </div>
+          {renderAuthBrand()}
 
           <Card className='border-0 !rounded-2xl overflow-hidden'>
             <div className='flex justify-center pt-6 pb-2'>
@@ -557,12 +566,7 @@ const RegisterForm = () => {
     return (
       <div className='flex flex-col items-center'>
         <div className='w-full max-w-md'>
-          <div className='flex items-center justify-center mb-6 gap-2'>
-            <img src={logo} alt='Logo' className='h-10 rounded-full' />
-            <Title heading={3} className='!text-gray-800'>
-              {systemName}
-            </Title>
-          </div>
+          {renderAuthBrand()}
 
           <Card className='border-0 !rounded-2xl overflow-hidden'>
             <div className='flex justify-center pt-6 pb-2'>
@@ -571,7 +575,7 @@ const RegisterForm = () => {
               </Title>
             </div>
             <div className='px-2 py-8'>
-              <Form className='space-y-3'>
+              <Form className='api-transfer-auth-form space-y-3'>
                 <Form.Input
                   field='username'
                   label={t('用户名')}
@@ -583,6 +587,7 @@ const RegisterForm = () => {
 
                 <Form.Input
                   field='password'
+                  fieldClassName='api-transfer-auth-password-field'
                   label={t('密码')}
                   placeholder={t('输入密码，最短 8 位，最长 20 位')}
                   name='password'
@@ -593,6 +598,7 @@ const RegisterForm = () => {
 
                 <Form.Input
                   field='password2'
+                  fieldClassName='api-transfer-auth-password-field'
                   label={t('确认密码')}
                   placeholder={t('确认密码')}
                   name='password2'
@@ -677,7 +683,7 @@ const RegisterForm = () => {
                 <div className='space-y-2 pt-2'>
                   <Button
                     theme='solid'
-                    className='w-full !rounded-full'
+                    className='api-transfer-auth-cta w-full'
                     type='primary'
                     htmlType='submit'
                     onClick={handleSubmit}
@@ -749,17 +755,8 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className='relative overflow-hidden bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-      {/* 背景模糊晕染球 */}
-      <div
-        className='blur-ball blur-ball-indigo'
-        style={{ top: '-80px', right: '-80px', transform: 'none' }}
-      />
-      <div
-        className='blur-ball blur-ball-teal'
-        style={{ top: '50%', left: '-120px' }}
-      />
-      <div className='w-full max-w-sm mt-[60px]'>
+    <div className='api-transfer-auth-page relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+      <div className='w-full max-w-sm'>
         {renderEmailRegisterForm()}
         {renderWeChatLoginModal()}
 

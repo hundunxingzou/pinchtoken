@@ -57,10 +57,8 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   } = useNotifications(statusState);
 
   const isHomeRoute = location.pathname === '/';
-  const useLightTopbar = !isHomeRoute;
+  const useLightTopbar = true;
   const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
-  const [topbarScrolledAway, setTopbarScrolledAway] = useState(false);
-  const onHeroSurface = isHomeRoute;
   const activeLang = currentLang?.startsWith('zh') ? 'zh' : 'en';
   const brandName = systemName || 'CCSub';
   const brandInitial = (brandName || 'C').trim().slice(0, 1).toUpperCase();
@@ -87,67 +85,6 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     setMobilePanelOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (isConsoleRoute) {
-      setTopbarScrolledAway(false);
-      return;
-    }
-
-    let frameId = null;
-
-    const getPageScrollTop = () => {
-      const scrollContainers = [
-        document.scrollingElement,
-        document.documentElement,
-        document.body,
-        document.querySelector('.pricing-view-container'),
-        document.querySelector('.pricing-view-container-mobile'),
-        document.querySelector('.pricing-content'),
-        document.querySelector('.pricing-sidebar'),
-      ].filter(Boolean);
-
-      return Math.max(
-        window.scrollY || 0,
-        ...scrollContainers.map((element) => element.scrollTop || 0),
-      );
-    };
-
-    const updateTopbarVisibility = () => {
-      if (frameId !== null) {
-        window.cancelAnimationFrame(frameId);
-      }
-
-      frameId = window.requestAnimationFrame(() => {
-        setTopbarScrolledAway(getPageScrollTop() > 8);
-        frameId = null;
-      });
-    };
-
-    const scrollTargets = [
-      window,
-      document.querySelector('.pricing-view-container'),
-      document.querySelector('.pricing-view-container-mobile'),
-      document.querySelector('.pricing-content'),
-      document.querySelector('.pricing-sidebar'),
-    ].filter(Boolean);
-
-    updateTopbarVisibility();
-    scrollTargets.forEach((target) => {
-      target.addEventListener('scroll', updateTopbarVisibility, {
-        passive: true,
-      });
-    });
-
-    return () => {
-      if (frameId !== null) {
-        window.cancelAnimationFrame(frameId);
-      }
-      scrollTargets.forEach((target) => {
-        target.removeEventListener('scroll', updateTopbarVisibility);
-      });
-    };
-  }, [isConsoleRoute, location.pathname]);
-
   const toggleLanguage = () => {
     handleLanguageChange(activeLang === 'zh' ? 'en' : 'zh-CN');
   };
@@ -167,9 +104,8 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
 
   const topbarClassName = [
     'api-transfer-topbar',
-    onHeroSurface ? 'api-transfer-topbar-hero' : '',
     useLightTopbar ? 'api-transfer-topbar-light' : '',
-    topbarScrolledAway ? 'api-transfer-topbar-scrolled-away' : '',
+    isHomeRoute ? 'api-transfer-topbar-home' : '',
   ]
     .filter(Boolean)
     .join(' ');

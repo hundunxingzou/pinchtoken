@@ -21,7 +21,6 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   API,
-  getLogo,
   showError,
   showInfo,
   showSuccess,
@@ -112,8 +111,8 @@ const RegisterForm = () => {
   const githubTimeoutRef = useRef(null);
   const githubButtonText = t(githubButtonTextKeyByState[githubButtonState]);
 
-  const logo = getLogo();
   const systemName = getSystemName();
+  const brandInitial = (systemName || 'C').trim().slice(0, 1).toUpperCase();
 
   let affCode = new URLSearchParams(window.location.search).get('aff');
   if (affCode) {
@@ -392,16 +391,12 @@ const RegisterForm = () => {
   };
 
   const renderAuthBrand = () => (
-    <Link
-      to='/'
-      className='api-transfer-auth-brand api-transfer-auth-brand--header'
-      aria-label={systemName}
-    >
-      <span className='api-transfer-auth-brand-logo' aria-hidden='true'>
-        <img src={logo} alt='' />
+    <div className='api-transfer-auth-brand' aria-label={systemName}>
+      <span className='api-transfer-auth-brand-mark' aria-hidden='true'>
+        {brandInitial}
       </span>
       <span className='api-transfer-auth-brand-name'>{systemName}</span>
-    </Link>
+    </div>
   );
 
   const renderOAuthOptions = () => {

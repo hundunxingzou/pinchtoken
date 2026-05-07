@@ -36,8 +36,10 @@ For commercial licensing, please contact support@quantumnous.com
   width: 100%;
   min-height: 64px;
   color: #ffffff;
-  background-color: #18181b;
+  background-color: transparent;
   box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transition:
     background-color 220ms ease,
     box-shadow 220ms ease,
@@ -47,6 +49,13 @@ For commercial licensing, please contact support@quantumnous.com
 
 .api-transfer-topbar-light {
   color: #18181b;
+  background-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-scrolled {
   background-color: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -69,8 +78,11 @@ For commercial licensing, please contact support@quantumnous.com
   gap: 12px;
   min-width: 0;
   color: #ffffff;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
+    Helvetica, Arial, sans-serif;
   font-size: 1.45rem;
-  font-weight: 560;
+  font-weight: 700;
   line-height: 1;
   text-decoration: none;
 }
@@ -95,6 +107,8 @@ For commercial licensing, please contact support@quantumnous.com
 
 .api-transfer-brand > span:last-child {
   overflow: hidden;
+  font-family: inherit;
+  font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -503,6 +517,13 @@ For commercial licensing, please contact support@quantumnous.com
 
 .api-transfer-topbar-light.api-transfer-topbar-home {
   color: #ffffff;
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.api-transfer-topbar-light.api-transfer-topbar-home.api-transfer-topbar-scrolled {
   background-color: rgba(1, 16, 52, 0.3);
   backdrop-filter: blur(18px) saturate(1.12);
   -webkit-backdrop-filter: blur(18px) saturate(1.12);
@@ -648,6 +669,13 @@ For commercial licensing, please contact support@quantumnous.com
 /* Dark mode overrides for light topbar (non-home pages) */
 body[theme-mode='dark'] .api-transfer-topbar-light {
   color: #ffffff;
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light.api-transfer-topbar-scrolled {
   background-color: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -758,7 +786,8 @@ body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel a:
   background: rgba(255, 255, 255, 0.1);
 }
 
-body[theme-mode='dark'] .api-transfer-topbar-light.api-transfer-topbar-home {
+body[theme-mode='dark']
+  .api-transfer-topbar-light.api-transfer-topbar-home.api-transfer-topbar-scrolled {
   background-color: rgba(1, 16, 52, 0.58);
   backdrop-filter: blur(18px) saturate(1.14);
   -webkit-backdrop-filter: blur(18px) saturate(1.14);

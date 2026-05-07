@@ -5,7 +5,7 @@ WORKDIR /build
 COPY web/dist ./dist
 
 FROM golang:alpine AS builder2
-ENV GO111MODULE=on CGO_ENABLED=0
+ENV GO111MODULE=on CGO_ENABLED=0 GOPROXY=https://goproxy.cn,direct
 
 ARG TARGETOS
 ARG TARGETARCH

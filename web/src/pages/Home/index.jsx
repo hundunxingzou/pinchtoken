@@ -19,6 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
   Boxes,
@@ -32,6 +33,7 @@ import {
 import { API } from '../../helpers';
 import NoticeModal from '../../components/layout/NoticeModal';
 import { StatusContext } from '../../context/Status';
+import { UserContext } from '../../context/User';
 import { useIsMobile } from '../../hooks/common/useIsMobile';
 import './api-transfer-home.css';
 
@@ -302,6 +304,8 @@ function Hero({ baseUrl, t }) {
   const [endpointIndex, setEndpointIndex] = useState(0);
   const endpointPath = endpointPaths[endpointIndex];
   const displayBaseUrl = normalizeBaseUrl(baseUrl);
+  const [userState] = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -350,10 +354,14 @@ function Hero({ baseUrl, t }) {
           </div>
 
           <div className='hero-actions'>
-            <a className='button button-primary' href='#pricing'>
+            <button
+              className='button button-primary'
+              type='button'
+              onClick={() => navigate(userState?.user ? '/console' : '/login')}
+            >
               <span>{t.heroPrimary}</span>
               <ArrowRight size={21} aria-hidden='true' />
-            </a>
+            </button>
             <a className='button button-ghost-dark' href='#models'>
               <span>{t.heroSecondary}</span>
               <Boxes size={20} aria-hidden='true' />

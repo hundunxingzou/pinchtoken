@@ -36,14 +36,18 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 .api-transfer-topbar-hero {
-  background-color: transparent;
-  box-shadow: none;
+  background-color: rgba(0, 16, 51, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(224, 246, 255, 0.08);
 }
 
 .api-transfer-topbar-light {
   color: #001037;
-  background-color: transparent;
-  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 rgba(0, 16, 55, 0.06);
 }
 
 .api-transfer-topbar-scrolled-away {
@@ -488,4 +492,99 @@ For commercial licensing, please contact support@quantumnous.com
     width: 38px;
     height: 38px;
   }
+}
+
+/* Dark mode overrides for light topbar (non-home pages) */
+body[theme-mode='dark'] .api-transfer-topbar-light {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-brand,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-brand:hover {
+  color: #ffffff;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-brand-mark {
+  border: none;
+  color: #001037;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-nav,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-nav a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-nav a:hover {
+  color: #ffffff;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-nav a::after {
+  background: #d7ff00;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-icon-button,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-menu {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-icon-button:hover,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-menu:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch::before {
+  background: #ffffff;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch[data-lang='zh'] span:first-child,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-lang-switch[data-lang='en'] span:last-child {
+  color: #001037;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-topbar-button-ghost,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-user-button {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-topbar-button-ghost:hover,
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-user-button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-user-button span {
+  color: #001037;
+  background: #ffffff;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  background: rgba(0, 16, 55, 0.96);
+  box-shadow: 0 24px 60px -36px rgba(0, 16, 55, 0.7);
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel a:not(.api-transfer-mobile-action) {
+  color: #ffffff;
+}
+
+body[theme-mode='dark'] .api-transfer-topbar-light .api-transfer-mobile-panel a:not(.api-transfer-mobile-action):hover {
+  background: rgba(255, 255, 255, 0.1);
 }

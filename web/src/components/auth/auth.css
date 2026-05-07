@@ -59,6 +59,7 @@ For commercial licensing, please contact support@quantumnous.com
   border: 0 !important;
   border-radius: 18px !important;
   background: #f2f2f2;
+  overflow: hidden;
 }
 
 .api-transfer-auth-form .semi-input-wrapper:hover,
@@ -153,4 +154,27 @@ For commercial licensing, please contact support@quantumnous.com
 .api-transfer-auth-cta.semi-button.semi-button-loading {
   opacity: 0.68;
   transform: none;
+}
+
+/* Dark mode overrides */
+body[theme-mode='dark'] .api-transfer-auth-brand {
+  color: #ffffff;
+}
+
+body[theme-mode='dark'] .api-transfer-auth-form .semi-input-wrapper {
+  border: 0 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+body[theme-mode='dark'] .api-transfer-auth-form .semi-input-wrapper:hover,
+body[theme-mode='dark'] .api-transfer-auth-form .semi-input-wrapper-focus {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+body[theme-mode='dark'] .api-transfer-auth-form .semi-input {
+  color: #ffffff !important;
+}
+
+body[theme-mode='dark'] .api-transfer-auth-form .semi-input::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
 }

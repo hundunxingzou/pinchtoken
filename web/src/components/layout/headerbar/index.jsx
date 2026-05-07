@@ -21,7 +21,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Bell, Menu, X } from 'lucide-react';
 import { useHeaderBar } from '../../../hooks/common/useHeaderBar';
+import { useNavigation } from '../../../hooks/common/useNavigation';
 import { useNotifications } from '../../../hooks/common/useNotifications';
+import ThemeToggle from './ThemeToggle';
 import NoticeModal from '../NoticeModal';
 import './api-transfer-header.css';
 
@@ -35,6 +37,10 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
     isConsoleRoute,
     location,
     pricingRequireAuth,
+    docsLink,
+    headerNavModules,
+    theme,
+    handleThemeToggle,
     logout,
     handleLanguageChange,
     handleMobileMenuToggle,
@@ -59,23 +65,23 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const brandName = systemName || 'CCSub';
   const brandInitial = (brandName || 'C').trim().slice(0, 1).toUpperCase();
 
+  const { mainNavLinks } = useNavigation(t, docsLink, headerNavModules);
+
   const navLinks = useMemo(() => {
     const requireLogin = !userState.user;
-    return [
-      {
-        text: t('首页'),
-        to: '/',
-      },
-      {
-        text: t('控制台'),
-        to: requireLogin ? '/login' : '/console',
-      },
-      {
-        text: t('模型广场'),
-        to: pricingRequireAuth && requireLogin ? '/login' : '/pricing',
-      },
-    ];
-  }, [pricingRequireAuth, t, userState.user]);
+    return mainNavLinks.map((link) => {
+      if (link.isExternal) {
+        return { text: link.text, href: link.externalLink, external: true };
+      }
+      if (link.itemKey === 'console' && requireLogin) {
+        return { text: link.text, to: '/login' };
+      }
+      if (link.itemKey === 'pricing' && pricingRequireAuth && requireLogin) {
+        return { text: link.text, to: '/login' };
+      }
+      return { text: link.text, to: link.to };
+    });
+  }, [mainNavLinks, pricingRequireAuth, userState.user]);
 
   useEffect(() => {
     setMobilePanelOpen(false);
@@ -187,11 +193,17 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
         </Link>
 
         <nav className='api-transfer-nav' aria-label={t('顶部导航')}>
-          {navLinks.map((link) => (
-            <Link key={link.text} to={link.to}>
-              {link.text}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.external ? (
+              <a key={link.text} href={link.href} target='_blank' rel='noopener noreferrer'>
+                {link.text}
+              </a>
+            ) : (
+              <Link key={link.text} to={link.to}>
+                {link.text}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className='api-transfer-actions'>
@@ -208,6 +220,8 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
               </span>
             )}
           </button>
+
+          <ThemeToggle theme={theme} onThemeToggle={handleThemeToggle} t={t} />
 
           <button
             className='api-transfer-lang-switch'
@@ -277,16 +291,29 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
       </div>
 
       <div className='api-transfer-mobile-panel' data-open={mobilePanelOpen}>
-        {navLinks.map((link) => (
-          <Link
-            key={link.text}
-            to={link.to}
-            onClick={() => setMobilePanelOpen(false)}
-          >
-            {link.text}
-            <ArrowRight size={18} aria-hidden='true' />
-          </Link>
-        ))}
+        {navLinks.map((link) =>
+          link.external ? (
+            <a
+              key={link.text}
+              href={link.href}
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() => setMobilePanelOpen(false)}
+            >
+              {link.text}
+              <ArrowRight size={18} aria-hidden='true' />
+            </a>
+          ) : (
+            <Link
+              key={link.text}
+              to={link.to}
+              onClick={() => setMobilePanelOpen(false)}
+            >
+              {link.text}
+              <ArrowRight size={18} aria-hidden='true' />
+            </Link>
+          )
+        )}
         <button
           className='api-transfer-lang-switch'
           data-lang={activeLang}
